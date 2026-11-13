@@ -73,6 +73,26 @@ test("lab checks provenance, teaches the companion, and exposes decision history
   await page.getByRole("button", { name: /retrieval.py a1b2c3d/ }).click();
   await expect(page.getByRole("status")).toContainText("Evidence connected");
   await expect(
+    page.getByRole("figure", { name: "Co-op evidence bridge" }),
+  ).toHaveAttribute("data-tiles", "2");
+  await page
+    .getByRole("button", {
+      name: "The retriever searches every commit in GitHub.",
+    })
+    .click();
+  await expect(page.getByRole("status")).toContainText("not supported");
+  await expect(
+    page.getByRole("figure", { name: "Co-op evidence bridge" }),
+  ).toHaveAttribute("data-tiles", "2");
+  await page
+    .getByRole("button", {
+      name: "The retriever combines two ranked result lists.",
+    })
+    .click();
+  await expect(
+    page.getByRole("figure", { name: "Co-op evidence bridge" }),
+  ).toHaveAttribute("data-tiles", "3");
+  await expect(
     page.getByText("Source finding, learned. We make a good team."),
   ).toBeVisible();
   await expect(
@@ -86,6 +106,31 @@ test("lab checks provenance, teaches the companion, and exposes decision history
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "AI products",
   );
+});
+
+test("companion grows from exploration without counting the same project twice", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const current = page.locator('.growth-stop[aria-current="step"]');
+  await expect(current).toContainText("The seed");
+  for (const projectName of [
+    /01.*PRODUCTION.*Recollia/s,
+    /01.*PRODUCTION.*Recollia/s,
+  ]) {
+    await page.getByRole("button", { name: projectName }).click();
+    await page.keyboard.press("Escape");
+  }
+  await expect(current).toContainText("The learner");
+  await expect(page.locator(".companion-level")).toContainText("01");
+  for (const projectName of [
+    /02.*DEVELOPER.*GitHub MCP/s,
+    /03.*HACKATHON.*KiranaLedger/s,
+  ]) {
+    await page.getByRole("button", { name: projectName }).click();
+    await page.keyboard.press("Escape");
+  }
+  await expect(current).toContainText("The guide");
 });
 
 test("theme persists and both routes pass automated accessibility checks", async ({

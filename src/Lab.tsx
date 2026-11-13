@@ -4,6 +4,8 @@ import { Companion } from "./Companion";
 import { Icon } from "./Icon";
 import { iterations } from "./data";
 import { checkSource, sources } from "./evidence";
+import { claims, claimIsSupported } from "./companion-progress";
+import { CoopWorld } from "./CoopWorld";
 
 const HandControls = lazy(() => import("./HandControls"));
 
@@ -21,6 +23,7 @@ export function Lab({
   const [challenge, setChallenge] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [complete, setComplete] = useState(false);
+  const [sourceVerified, setSourceVerified] = useState(false);
   const [handPanel, setHandPanel] = useState(false);
   function chooseSource(index: number) {
     const source = sources[index];
@@ -29,9 +32,8 @@ export function Lab({
       setFeedback(
         "Evidence connected. The retrieved file and commit both match.",
       );
-      setStage(3);
-      setComplete(true);
-      onLearn();
+      setStage(2);
+      setSourceVerified(true);
     } else {
       setFeedback(
         source.commit !== "a1b2c3d"
@@ -40,6 +42,18 @@ export function Lab({
       );
       setStage(2);
     }
+  }
+  function chooseClaim(claim: string) {
+    if (!claimIsSupported(sourceVerified, claim)) {
+      setFeedback(
+        "That claim is not supported by the fixture. Check what the function combines.",
+      );
+      return;
+    }
+    setFeedback("Bridge complete. The file, revision, and claim all connect.");
+    setComplete(true);
+    setStage(3);
+    onLearn();
   }
   return (
     <main id="main" tabIndex={-1} className="lab-page page-width">
@@ -53,6 +67,14 @@ export function Lab({
             Follow the <em>evidence.</em>
           </h1>
           <p className="lead">Pull an idea apart. See what makes it work.</p>
+          <button
+            className="inline-link lab-world-link"
+            onClick={() =>
+              document.getElementById("bridge-world")?.scrollIntoView()
+            }
+          >
+            Explore the co-op world <span aria-hidden="true">↓</span>
+          </button>
         </div>
         <button
           className="button"
@@ -76,6 +98,7 @@ export function Lab({
                 setStage(0);
                 setFeedback("");
                 setComplete(false);
+                setSourceVerified(false);
               }}
             >
               <Icon name="reset" size={16} /> Reset machine
@@ -96,13 +119,23 @@ export function Lab({
         )}
       </div>
       <div className="lab-bottom-grid">
-        <section className="challenge-panel" aria-labelledby="challenge-title">
+        <section
+          className="challenge-panel"
+          id="bridge-world"
+          aria-labelledby="challenge-title"
+        >
           <p className="eyebrow">YOU + YOUR LAB PARTNER</p>
           <h2 id="challenge-title">Two minds. One source.</h2>
           <p>
             I’ll hold the answer. You connect its evidence. Can you spot the
             source that actually belongs?
           </p>
+          <CoopWorld
+            night={night}
+            sourceVerified={sourceVerified}
+            complete={complete}
+            discoveries={discoveries.length}
+          />
           {!challenge ? (
             <button
               className="button primary"
@@ -115,28 +148,54 @@ export function Lab({
             </button>
           ) : (
             <>
-              <div className="task-brief">
-                <span className="eyebrow">ILLUSTRATIVE ANSWER</span>
-                <p>“The retriever combines two ranked result lists.”</p>
-                <code>retrieved: retrieval.py @ a1b2c3d</code>
+              <div className="bridge-task">
+                <div className="task-brief">
+                  <span className="eyebrow">ILLUSTRATIVE ANSWER</span>
+                  <p>“The retriever combines two ranked result lists.”</p>
+                  <code>retrieved: retrieval.py @ a1b2c3d</code>
+                  <code>combine_ranks(bm25_results, dense_results)</code>
+                  <span className="fixture-label">
+                    Illustrative source, not project code.
+                  </span>
+                </div>
+                <div className="source-options">
+                  {sources.map((source, i) => (
+                    <button
+                      key={`${source.file}-${source.commit}`}
+                      className="source-option"
+                      onClick={() => chooseSource(i)}
+                      disabled={sourceVerified}
+                    >
+                      <Icon name="code" size={18} />
+                      <span>
+                        <strong>{source.label}</strong>
+                        <code>{source.commit}</code>
+                      </span>
+                      <Icon name="arrow" size={16} />
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div className="source-options">
-                {sources.map((source, i) => (
-                  <button
-                    key={`${source.file}-${source.commit}`}
-                    className="source-option"
-                    onClick={() => chooseSource(i)}
-                    disabled={complete}
-                  >
-                    <Icon name="code" size={18} />
-                    <span>
-                      <strong>{source.label}</strong>
-                      <code>{source.commit}</code>
-                    </span>
-                    <Icon name="arrow" size={16} />
-                  </button>
-                ))}
-              </div>
+              {sourceVerified && (
+                <div className="claim-task">
+                  <p className="eyebrow">
+                    THE FINAL TILE / WHAT DOES THE SOURCE SUPPORT?
+                  </p>
+                  <div className="claim-options">
+                    {claims.map((claim) => (
+                      <button
+                        key={claim.id}
+                        className="claim-option"
+                        onClick={() => chooseClaim(claim.id)}
+                        disabled={complete}
+                      >
+                        {claim.text}
+                        <Icon name="arrow" size={17} />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
               <p
                 className={`task-feedback ${complete ? "success" : ""}`}
                 role="status"
@@ -149,6 +208,7 @@ export function Lab({
                   className="text-button"
                   onClick={() => {
                     setComplete(false);
+                    setSourceVerified(false);
                     setFeedback("");
                     setStage(1);
                   }}

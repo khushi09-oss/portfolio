@@ -5,6 +5,7 @@ import "@fontsource/cormorant-garamond/500.css";
 import "@fontsource/cormorant-garamond/500-italic.css";
 import "@fontsource/cormorant-garamond/600.css";
 import "./styles.css";
+import "./worlds.css";
 import App from "./App";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

@@ -19,7 +19,8 @@ The first `dev` or `build` command downloads Google's versioned hand model and v
 
 - React and TypeScript render the portfolio, project dialogs, day/night theme, and decision history.
 - Three.js renders a procedural machine. It redraws when its state or size changes, pauses offscreen, and respects reduced motion. Text controls remain usable if WebGL is unavailable.
-- The companion gains predefined abilities as projects are explored during a visit. It does not train a model. The co-op task pairs one visitor with the local companion, not a remote player.
+- The companion grows from a seed into a learner and guide as distinct projects are explored during a visit. Revisiting the same project does not increase progress. It does not train a model.
+- The co-op bridge pairs one visitor with the local companion, not a remote player. Two tiles require the retrieved file at the right revision; the third requires a claim supported by the local fixture. Day/night mode also changes the illustrated scene, including rain and lamplight.
 - Hand tracking runs in a worker after camera opt-in. Pinch and move sideways to change stages. Closing the panel, leaving the lab, hiding the page, or cancelling startup stops camera tracks. Mouse, touch, and keyboard controls remain available.
 
 The machine uses a small local evidence fixture. It does not call an LLM, connect to private repositories, or run the actual projects shown in the portfolio. Project descriptions distinguish employer contributions, team projects, experiments, and work in development.

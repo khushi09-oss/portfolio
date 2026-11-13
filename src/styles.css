@@ -589,6 +589,8 @@ h1 {
   gap: 28px;
 }
 .experiment-card {
+  display: flex;
+  flex-direction: column;
   text-align: left;
   background: transparent;
   padding: 0;
@@ -627,6 +629,7 @@ h1 {
   gap: 100px;
 }
 .project-preview {
+  width: 100%;
   margin: 0;
   overflow: hidden;
   background: var(--surface);
