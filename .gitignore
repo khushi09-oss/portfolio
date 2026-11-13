@@ -9,3 +9,7 @@ playwright-report/
 .sites-runtime/
 .sites-checkout/
 *.local
+public/vision/
+*.tsbuildinfo
+/docs/DESIGN.md
+/.openai/
