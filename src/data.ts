@@ -10,6 +10,7 @@ export type Project = {
   link?: string;
   demo?: string;
   status: string;
+  preview?: { src: string; nightSrc?: string; alt: string; note: string };
 };
 
 export const projects: Project[] = [
@@ -83,6 +84,11 @@ export const projects: Project[] = [
   {
     id: "galilearn",
     name: "Galilearn",
+    preview: {
+      src: "/projects/galilearn-prototype.jpg",
+      alt: "Galilearn's coded design prototype, with illustrated watercolor planets and its learning interface",
+      note: "Actual design prototype · In development",
+    },
     category: "LEARNING PRODUCT / IN DEVELOPMENT",
     summary: "A little universe for learning machine learning.",
     role: "Personal product · Cosmic Study Buddy",
@@ -99,6 +105,12 @@ export const projects: Project[] = [
   {
     id: "tiny-town",
     name: "Tiny Town",
+    preview: {
+      src: "/projects/tiny-town-day.png",
+      nightSrc: "/projects/tiny-town-night.png",
+      alt: "Tiny Town's pixel village with thirty residents, cottages, and replay controls",
+      note: "Actual interface · Staged mock replay",
+    },
     category: "EXPERIMENT / PIXEL WORLDS",
     summary: "Thirty neighbors. One small, unfolding day.",
     role: "Personal experiment",

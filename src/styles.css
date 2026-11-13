@@ -563,6 +563,12 @@ h1 {
   font-size: 12px;
   color: var(--muted);
 }
+.project-role {
+  font-size: 11px;
+  color: var(--text);
+  line-height: 1.5;
+  margin-block: 2px;
+}
 .project-tech {
   font-size: 10px;
   color: var(--muted);
@@ -614,232 +620,36 @@ h1 {
 .experiment-card:hover .experiment-caption > svg {
   color: var(--rose);
 }
-.town-art {
-  height: 235px;
-  position: relative;
-  overflow: hidden;
-  background: #cbd9cf;
-  image-rendering: pixelated;
-}
-.town-ground {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 85px;
-  background: #899d78;
-  border-top: 8px solid #acc19a;
-}
-.pixel-sun {
-  position: absolute;
-  width: 29px;
-  height: 29px;
-  right: 65px;
-  top: 28px;
-  background: #ece2b8;
-  box-shadow:
-    0 -5px #ece2b8,
-    0 5px #ece2b8,
-    5px 0 #ece2b8,
-    -5px 0 #ece2b8;
-}
-.pixel-cloud {
-  position: absolute;
-  width: 60px;
-  height: 10px;
-  background: #eef1e6;
-  box-shadow:
-    10px -10px #eef1e6,
-    20px -20px 0 -5px #eef1e6,
-    20px 10px #eef1e6;
-}
-.cloud-one {
-  left: 50px;
-  top: 65px;
-}
-.cloud-two {
-  right: 130px;
-  top: 95px;
-  transform: scale(0.7);
-}
-.pixel-house {
-  position: absolute;
-  bottom: 62px;
-  width: 88px;
-  height: 65px;
-  background: #e5d6b8;
-  border: 5px solid #76685a;
-  box-shadow: 5px 5px #485d4933;
-}
-.pixel-house::before {
-  content: "";
-  position: absolute;
-  width: 84px;
-  height: 38px;
-  top: -34px;
-  left: -3px;
-  background: #9c7773;
-  clip-path: polygon(
-    0 100%,
-    0 75%,
-    10% 75%,
-    10% 50%,
-    25% 50%,
-    25% 25%,
-    40% 25%,
-    40% 0,
-    60% 0,
-    60% 25%,
-    75% 25%,
-    75% 50%,
-    90% 50%,
-    90% 75%,
-    100% 75%,
-    100% 100%
-  );
-}
-.pixel-house::after {
-  content: "";
-  position: absolute;
-  width: 17px;
-  height: 26px;
-  bottom: 0;
-  left: 29px;
-  background: #796b5d;
-  box-shadow:
-    -24px -12px 0 -3px #b9c8be,
-    24px -12px 0 -3px #b9c8be;
-}
-.house-one {
-  left: 26%;
-}
-.house-two {
-  right: 15%;
-  transform: scale(0.75);
-  transform-origin: bottom;
-}
-.pixel-tree {
-  position: absolute;
-  width: 12px;
-  height: 45px;
-  background: #766954;
-  bottom: 60px;
-}
-.pixel-tree::before {
-  content: "";
-  position: absolute;
-  left: -22px;
-  top: -36px;
-  width: 55px;
-  height: 46px;
-  background: #668765;
-  box-shadow:
-    -8px 12px #668765,
-    8px 12px #668765,
-    0 20px #668765;
-}
-.tree-one {
-  left: 12%;
-}
-.tree-two {
-  right: 9%;
-  transform: scale(0.8);
-}
-.town-path {
-  position: absolute;
-  bottom: -10px;
-  left: 37%;
-  width: 100px;
-  height: 70px;
-  background: #cfbfa0;
-  transform: skewX(-25deg);
-  border-inline: 6px solid #c0af91;
-}
-.town-person {
-  position: absolute;
-  left: 53%;
-  bottom: 42px;
-  width: 10px;
-  height: 13px;
-  background: #ac7888;
-  box-shadow:
-    0 -7px #d8bca1,
-    0 -10px #554944,
-    -2px 14px 0 -3px #554944,
-    3px 14px 0 -3px #554944;
-}
-.orbit-art {
-  height: 235px;
-  position: relative;
-  overflow: hidden;
-  background: #e4e1dc;
-}
-.orbit-ring {
-  position: absolute;
-  border: 1px solid #aaa79c88;
-  border-radius: 50%;
-  width: 300px;
-  height: 110px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) rotate(-25deg);
-}
-.ring-two {
-  width: 370px;
-  height: 175px;
-  transform: translate(-50%, -50%) rotate(28deg);
-}
-.orbit-planet {
-  position: absolute;
-  width: 108px;
-  height: 108px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 25%, #e5c9c4, #c69b9c 48%, #967b81);
-  box-shadow:
-    inset -10px -5px 20px #705c6f33,
-    9px 12px 20px #43403b15;
-}
-.orbit-moon {
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: #a0aaa0;
-  left: 72%;
-  top: 25%;
-  box-shadow: inset -4px -3px 5px #69756844;
-}
-.orbit-label {
-  position: absolute;
-  left: 24px;
-  bottom: 20px;
-  font-size: 9px;
-  color: #5e625c;
-  line-height: 1.6;
-  letter-spacing: 1px;
-}
-.orbit-star {
-  position: absolute;
-  color: #727a71;
-  font-size: 19px;
-}
-.star-one {
-  left: 23%;
-  top: 20%;
-}
-.star-two {
-  right: 18%;
-  bottom: 24%;
-  font-size: 11px;
-}
 .about-section {
   padding-block: 110px 85px;
   display: grid;
   grid-template-columns: 1.1fr 1fr;
   gap: 100px;
+}
+.project-preview {
+  margin: 0;
+  overflow: hidden;
+  background: var(--surface);
+}
+.project-preview img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: contain;
+  object-position: top;
+  display: block;
+}
+.project-preview figcaption {
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  padding: 9px 16px;
+  font-size: 9px;
+  line-height: 1.5;
+}
+.project-dialog .project-preview {
+  margin-top: 22px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
 }
 .about-intro > .eyebrow {
   color: var(--muted);
@@ -1603,10 +1413,6 @@ h1 {
   .experiment-grid {
     gap: 18px;
   }
-  .town-art,
-  .orbit-art {
-    height: 185px;
-  }
   .experiment-caption {
     padding: 17px;
   }
@@ -1622,39 +1428,6 @@ h1 {
   }
   .experiment-caption > svg {
     width: 18px;
-  }
-  .pixel-house {
-    transform: scale(0.7);
-    transform-origin: bottom;
-    left: 25%;
-  }
-  .house-two {
-    display: none;
-  }
-  .tree-one {
-    left: 12%;
-    transform: scale(0.65);
-    transform-origin: bottom;
-  }
-  .tree-two {
-    right: 13%;
-    transform: scale(0.55);
-    transform-origin: bottom;
-  }
-  .orbit-ring {
-    width: 220px;
-  }
-  .ring-two {
-    width: 260px;
-  }
-  .orbit-planet {
-    width: 85px;
-    height: 85px;
-  }
-  .orbit-label {
-    font-size: 7px;
-    left: 16px;
-    bottom: 12px;
   }
   .about-section {
     grid-template-columns: 1fr;
@@ -1897,10 +1670,6 @@ h1 {
   }
   .experiment-grid {
     grid-template-columns: 1fr;
-  }
-  .town-art,
-  .orbit-art {
-    height: 215px;
   }
   .experiment-caption .eyebrow {
     font-size: 7px;

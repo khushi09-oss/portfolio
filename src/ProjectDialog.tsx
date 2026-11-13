@@ -1,12 +1,15 @@
 import { useEffect, useRef } from "react";
 import type { Project } from "./data";
 import { Icon } from "./Icon";
+import { ProjectPreview } from "./ProjectPreview";
 
 export function ProjectDialog({
   project,
+  night,
   onClose,
 }: {
   project: Project | null;
+  night: boolean;
   onClose: () => void;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
@@ -40,6 +43,7 @@ export function ProjectDialog({
           <p className="project-status">{project.status}</p>
           <h2 id="project-title">{project.name}</h2>
           <p className="dialog-deck">{project.summary}</p>
+          <ProjectPreview project={project} night={night} />
           <p className="role-label">{project.role}</p>
           <div className="stack">
             {project.stack.map((item) => (

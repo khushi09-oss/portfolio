@@ -1,6 +1,36 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
+test("project previews show real interfaces and Tiny Town follows the selected theme", async ({
+  page,
+}) => {
+  await page.goto("/#work");
+  const town = page.getByRole("img", { name: /Tiny Town's pixel village/ });
+  const galilearn = page.getByRole("img", {
+    name: /Galilearn's coded design prototype/,
+  });
+  await town.scrollIntoViewIfNeeded();
+  await expect(town).toBeVisible();
+  await expect
+    .poll(() =>
+      town.evaluate((image) => (image as HTMLImageElement).naturalWidth),
+    )
+    .toBe(1440);
+  await expect
+    .poll(() =>
+      galilearn.evaluate((image) => (image as HTMLImageElement).naturalWidth),
+    )
+    .toBe(1440);
+  await page.getByRole("button", { name: "Switch to night mode" }).click();
+  await expect(town).toHaveAttribute("src", "/projects/tiny-town-night.png");
+  await expect
+    .poll(() => town.evaluate((image) => (image as HTMLImageElement).complete))
+    .toBe(true);
+  await page.getByRole("button", { name: /Tiny Town/ }).click();
+  await expect(page.getByRole("dialog").getByRole("img")).toBeVisible();
+  await page.keyboard.press("Escape");
+});
+
 test("portfolio content, contact links, and accessible project dialog", async ({
   page,
 }) => {

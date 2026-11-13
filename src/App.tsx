@@ -5,6 +5,7 @@ import { Icon } from "./Icon";
 import { Lab } from "./Lab";
 import Machine from "./Machine";
 import { ProjectDialog } from "./ProjectDialog";
+import { ProjectPreview } from "./ProjectPreview";
 
 function getNight() {
   try {
@@ -135,8 +136,7 @@ export default function App() {
                 </a>
               </div>
               <p className="current-role">
-                <span className="status-dot" /> Currently building the AI Tutor
-                at{" "}
+                <span className="status-dot" /> Machine Learning Engineer at{" "}
                 <button onClick={() => openProject(projects[0])}>
                   Recollia <Icon name="diagonal" size={12} />
                 </button>
@@ -188,6 +188,7 @@ export default function App() {
                   <span className="project-main">
                     <span className="eyebrow">{item.category}</span>
                     <span className="project-name">{item.name}</span>
+                  <span className="project-role">{item.role}</span>
                     <span className="project-summary">{item.summary}</span>
                   </span>
                   <span className="project-tech">
@@ -218,18 +219,7 @@ export default function App() {
                 className="experiment-card town-card"
                 onClick={() => openProject(projects[5])}
               >
-                <div className="town-art" aria-hidden="true">
-                  <div className="pixel-sun" />
-                  <div className="pixel-cloud cloud-one" />
-                  <div className="pixel-cloud cloud-two" />
-                  <div className="town-ground" />
-                  <div className="pixel-tree tree-one" />
-                  <div className="pixel-tree tree-two" />
-                  <div className="pixel-house house-one" />
-                  <div className="pixel-house house-two" />
-                  <div className="town-path" />
-                  <div className="town-person" />
-                </div>
+                <ProjectPreview project={projects[5]} night={night} />
                 <div className="experiment-caption">
                   <div>
                     <span className="eyebrow">
@@ -245,19 +235,7 @@ export default function App() {
                 className="experiment-card planet-card"
                 onClick={() => openProject(projects[4])}
               >
-                <div className="orbit-art" aria-hidden="true">
-                  <div className="orbit-ring ring-one" />
-                  <div className="orbit-ring ring-two" />
-                  <div className="orbit-planet" />
-                  <span className="orbit-moon" />
-                  <span className="orbit-star star-one">+</span>
-                  <span className="orbit-star star-two">+</span>
-                  <span className="orbit-label">
-                    a little universe
-                    <br />
-                    of understanding
-                  </span>
-                </div>
+                <ProjectPreview project={projects[4]} night={night} />
                 <div className="experiment-caption">
                   <div>
                     <span className="eyebrow">
@@ -288,12 +266,7 @@ export default function App() {
                 retrieval, the interface, the uncomfortable edge cases, and the
                 release.
               </p>
-              <p>
-                Outside the build, you’ll find me teaching Python to school
-                kids, getting a little competitive in co-op games, or adding
-                another tiny car to my collection. Soft aesthetics, pixel
-                worlds, and a very real love of how things work.
-              </p>
+              <p>I also teach Python to school kids.</p>
               <a className="inline-link" href="#lab">
                 Meet me at the workbench <Icon name="arrow" size={18} />
               </a>
@@ -361,7 +334,11 @@ export default function App() {
         <span>Made with care. And a little curiosity.</span>
         <a href="#home">Back to the beginning ↑</a>
       </footer>
-      <ProjectDialog project={project} onClose={() => setProject(null)} />
+      <ProjectDialog
+        project={project}
+        night={night}
+        onClose={() => setProject(null)}
+      />
     </>
   );
 }

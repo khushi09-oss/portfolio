@@ -24,6 +24,8 @@ The first `dev` or `build` command downloads Google's versioned hand model and v
 
 The machine uses a small local evidence fixture. It does not call an LLM, connect to private repositories, or run the actual projects shown in the portfolio. Project descriptions distinguish employer contributions, team projects, experiments, and work in development.
 
+Tiny Town's previews are captures of its actual interface with a staged mock replay, including day and night views. Galilearn's preview is captured from its coded design prototype and is labelled as a prototype. The portfolio does not ship either project's source code.
+
 ## Verify
 
 ```sh
