@@ -115,15 +115,16 @@ export default function App() {
                 ALWAYS A STUDENT.
               </p>
               <h1 id="intro-title" tabIndex={-1}>
-                AI systems,
+                AI products,
                 <br />
-                from retrieval
+                from idea
                 <br />
-                to <em>release.</em>
+                to release.
               </h1>
               <p className="hero-description">
-                I’m Khushi. I build production RAG systems
-                <br className="desktop-break" /> and the products around them.
+                I’m Khushi, an ML engineer who builds AI products end to end. I
+                work across models, backend systems, and interfaces to turn
+                ideas into useful software.
               </p>
               <div className="hero-links">
                 <a className="button primary" href="#work">

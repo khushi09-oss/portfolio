@@ -8,7 +8,7 @@ test("portfolio content, contact links, and accessible project dialog", async ({
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "AI systems",
+    "AI products",
   );
   await page.getByRole("button", { name: /01.*PRODUCTION.*Recollia/s }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
@@ -54,7 +54,7 @@ test("lab checks provenance, teaches the companion, and exposes decision history
   ).toBeVisible();
   await page.getByRole("link", { name: /Back to portfolio/ }).click();
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "AI systems",
+    "AI products",
   );
 });
 

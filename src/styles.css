@@ -246,9 +246,6 @@ h1 {
   line-height: 0.96;
   letter-spacing: -3.4px;
 }
-.hero h1 em {
-  color: var(--rose);
-}
 .hero-description {
   font-size: 15px;
   color: var(--muted);
