@@ -176,6 +176,9 @@ test("real hand model initializes on synthetic camera and tracks stop on close",
     timeout: 45000,
   });
   await page.getByRole("link", { name: /Back to portfolio/ }).click();
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "AI products",
+  );
   expect(
     await page.evaluate(() =>
       (window as unknown as { testStream: MediaStream }).testStream
