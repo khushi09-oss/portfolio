@@ -6,7 +6,7 @@ export default defineConfig({
   workers: 1,
   retries: 0,
   use: {
-    baseURL: "http://127.0.0.1:5178",
+    baseURL: process.env.PORTFOLIO_BASE_URL ?? "http://127.0.0.1:5178",
     trace: "retain-on-failure",
     launchOptions: {
       args: [
@@ -16,9 +16,11 @@ export default defineConfig({
     },
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
-  webServer: {
-    command: "npm run dev -- --port 5178 --strictPort",
-    url: "http://127.0.0.1:5178",
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: process.env.PORTFOLIO_BASE_URL
+    ? undefined
+    : {
+        command: "npm run dev -- --port 5178 --strictPort",
+        url: "http://127.0.0.1:5178",
+        reuseExistingServer: !process.env.CI,
+      },
 });
