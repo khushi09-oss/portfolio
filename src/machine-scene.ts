@@ -16,6 +16,9 @@ export function mountMachine(
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFShadowMap;
+  // Cache the static chassis shadow instead of redrawing it for every paper frame.
+  renderer.shadowMap.autoUpdate = false;
+  renderer.shadowMap.needsUpdate = true;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = night ? 1.15 : 1.18;
   renderer.domElement.setAttribute("aria-hidden", "true");
@@ -179,7 +182,7 @@ export function mountMachine(
     new RoundedBoxGeometry(1.1, 0.025, 1.55, 2, 0.01),
     paper,
   );
-  sheet.castShadow = true;
+  sheet.castShadow = false;
   source.add(sheet);
   for (let i = 0; i < 5; i++) {
     const line = new THREE.Mesh(
@@ -253,7 +256,8 @@ export function mountMachine(
   function animate(time: number) {
     frame = requestAnimationFrame(animate);
     if (!visible || document.hidden || time - last < 32) return;
-    const delta = Math.min((time - last) / 1000, 0.08);
+    // Use elapsed time so slower renderers do not stretch the same transition.
+    const delta = (time - last) / 1000;
     last = time;
     const desired = -3.6 + readStage() * 2.4;
     const moving = Math.abs(position - desired) > 0.005;
