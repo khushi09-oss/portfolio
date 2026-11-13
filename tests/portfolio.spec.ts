@@ -45,12 +45,13 @@ test("portfolio content, contact links, and accessible project dialog", async ({
   await expect(
     page.getByRole("dialog").getByRole("heading", { level: 2 }),
   ).toHaveText("Recollia AI Tutor");
+  await expect(page.getByRole("dialog")).toContainText("May–October 2026");
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).not.toBeVisible();
   await expect(
     page.getByText("Grounded answers", { exact: true }),
   ).toBeVisible();
-  await expect(page.getByRole("link", { name: /Say hello/ })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: /Email me/ })).toHaveAttribute(
     "href",
     "mailto:work.khushisahni@gmail.com",
   );

@@ -112,8 +112,7 @@ export default function App() {
           <section className="hero page-width" aria-labelledby="intro-title">
             <div className="hero-copy">
               <p className="eyebrow">
-                <span className="tiny-asterisk">✳</span> ENGINEER. BUILDER.
-                ALWAYS A STUDENT.
+                <span className="tiny-asterisk">✳</span> ML ENGINEER & PYTHON TUTOR
               </p>
               <h1 id="intro-title" tabIndex={-1}>
                 AI products,
@@ -136,7 +135,7 @@ export default function App() {
                 </a>
               </div>
               <p className="current-role">
-                <span className="status-dot" /> Machine Learning Engineer at{" "}
+                Previously Machine Learning Engineer at{" "}
                 <button onClick={() => openProject(projects[0])}>
                   Recollia <Icon name="diagonal" size={12} />
                 </button>
@@ -145,18 +144,18 @@ export default function App() {
             <div className="hero-workbench">
               <Machine compact night={night} stage={stage} onStage={setStage} />
               <div className="hero-lab-link">
-                <span>Curiosity looks good on you.</span>
+                <span>See how the source check works.</span>
                 <a href="#lab">
                   Play with the workbench <Icon name="arrow" size={17} />
                 </a>
               </div>
             </div>
             <div className="hero-bottom">
-              <span>A little engineering. A little wonder.</span>
+              <span>ML systems, developer tools, and learning apps.</span>
               <a href="#work">
                 SCROLL TO EXPLORE <span>↓</span>
               </a>
-              <span>BUILT TO KEEP LEARNING</span>
+              <span>PYTHON / ML / WEB</span>
             </div>
           </section>
           <section
@@ -168,13 +167,13 @@ export default function App() {
               <div>
                 <p className="eyebrow">01 / SELECTED WORK</p>
                 <h2 id="work-title">
-                  Things I’ve <em>put into the world.</em>
+                  Selected work
                 </h2>
               </div>
               <span className="section-aside">
-                From a real problem
+                What I built
                 <br />
-                to something people can use.
+                and how it works.
               </span>
             </div>
             <div className="project-list">
@@ -207,9 +206,9 @@ export default function App() {
           >
             <div className="section-heading">
               <div>
-                <p className="eyebrow">02 / FOLLOWING MY CURIOSITY</p>
+                <p className="eyebrow">02 / PERSONAL PROJECTS</p>
                 <h2 id="play-title">
-                  Some things start with <em>“what if?”</em>
+                  Personal projects
                 </h2>
               </div>
               <PixelBot small />
@@ -226,7 +225,7 @@ export default function App() {
                       A SMALL PIXEL-WORLD EXPERIMENT
                     </span>
                     <h3>Tiny Town</h3>
-                    <p>Thirty neighbors. One unfolding day.</p>
+                    <p>A pixel town where 30 residents follow their own routines.</p>
                   </div>
                   <Icon name="diagonal" size={24} />
                 </div>
@@ -242,7 +241,7 @@ export default function App() {
                       IN DEVELOPMENT / COSMIC STUDY BUDDY
                     </span>
                     <h3>Galilearn</h3>
-                    <p>Find your way through machine learning.</p>
+                    <p>An ML study app built around connected concepts.</p>
                   </div>
                   <Icon name="diagonal" size={24} />
                 </div>
@@ -255,25 +254,22 @@ export default function App() {
             aria-labelledby="about-title"
           >
             <div className="about-intro">
-              <p className="eyebrow">03 / THE PERSON BEHIND THE PIPELINE</p>
+              <p className="eyebrow">03 / ABOUT ME</p>
               <h2 id="about-title">
-                Serious about learning.
-                <br />
-                <em>Curious about everything.</em>
+                About me
               </h2>
               <p>
-                I’m an ML engineer who likes taking an idea all the way: the
-                retrieval, the interface, the uncomfortable edge cases, and the
-                release.
+                I work across ML, backend code, and frontend features. At
+                Recollia, I built an AI tutor for medical exam prep.
               </p>
               <p>I also teach Python to school kids.</p>
               <a className="inline-link" href="#lab">
-                Meet me at the workbench <Icon name="arrow" size={18} />
+                Try the lab <Icon name="arrow" size={18} />
               </a>
             </div>
             <div className="experience-list">
               <div>
-                <span className="eyebrow">MAY 2026 — PRESENT</span>
+                <span className="eyebrow">MAY — OCTOBER 2026</span>
                 <h3>Machine Learning Engineer</h3>
                 <p>Recollia · Medical exam-prep AI</p>
               </div>
@@ -298,16 +294,14 @@ export default function App() {
             <Companion learned={learned.size} discoveries={[...learned]} />
           </div>
           <section className="contact-section page-width" id="contact">
-            <p className="eyebrow">SOMETHING ON YOUR MIND?</p>
+            <p className="eyebrow">CONTACT</p>
             <h2>
-              Let’s make it <em>work.</em>
-              <span className="rose-period">*</span>
+              Get in touch
             </h2>
             <div className="contact-bottom">
               <p>
-                A role, a collaboration, or a wonderfully specific idea.
-                <br />
-                I’d like to hear about it.
+                For roles, freelance work, or collaborations, email me with what
+                you’re building.
               </p>
               <div className="contact-links">
                 <a
@@ -322,7 +316,7 @@ export default function App() {
                   className="button primary"
                   href="mailto:work.khushisahni@gmail.com"
                 >
-                  Say hello <Icon name="diagonal" size={18} />
+                  Email me <Icon name="diagonal" size={18} />
                 </a>
               </div>
             </div>
@@ -331,8 +325,7 @@ export default function App() {
       )}
       <footer className="site-footer page-width">
         <span>© {new Date().getFullYear()} Khushi Sahni</span>
-        <span>Made with care. And a little curiosity.</span>
-        <a href="#home">Back to the beginning ↑</a>
+        <a href="#home">Back to top ↑</a>
       </footer>
       <ProjectDialog
         project={project}

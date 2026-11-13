@@ -56,7 +56,7 @@ export function ProjectDialog({
             ))}
           </div>
           <aside className="lesson">
-            <span className="eyebrow">THE ENGINEERING TAKEAWAY</span>
+            <span className="eyebrow">WHY I BUILT IT THIS WAY</span>
             <p>{project.lesson}</p>
           </aside>
           <div className="dialog-links">
