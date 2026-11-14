@@ -57,7 +57,7 @@ export function Lab({
   }
   return (
     <main id="main" tabIndex={-1} className="lab-page page-width">
-      <a className="back-link" href="#home">
+      <a className="back-link" href="#work/github-mcp">
         ← Back to portfolio
       </a>
       <div className="lab-heading">

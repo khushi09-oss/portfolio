@@ -4,58 +4,61 @@ import AxeBuilder from "@axe-core/playwright";
 test("project previews show real interfaces and Tiny Town follows the selected theme", async ({
   page,
 }) => {
-  await page.goto("/#work");
+  await page.goto("/#work/tiny-town");
   const town = page.getByRole("img", { name: /Tiny Town's pixel village/ });
-  const galilearn = page.getByRole("img", {
-    name: /Galilearn's coded design prototype/,
-  });
-  await town.scrollIntoViewIfNeeded();
   await expect(town).toBeVisible();
   await expect
     .poll(() =>
       town.evaluate((image) => (image as HTMLImageElement).naturalWidth),
     )
     .toBe(1440);
+  await page.getByRole("button", { name: "Switch to night mode" }).click();
+  await expect(town).toHaveAttribute("src", "/projects/tiny-town-night.png");
+  await page.getByRole("link", { name: "Open the full project" }).click();
+  await expect(
+    page.getByRole("img", { name: /Tiny Town's pixel village/ }),
+  ).toBeVisible();
+  await page.getByRole("link", { name: "Back to notebook" }).click();
+  await page.getByRole("link", { name: "Galilearn", exact: true }).click();
+  const galilearn = page.getByRole("img", {
+    name: /Galilearn's coded design prototype/,
+  });
+  await expect(galilearn).toBeVisible();
   await expect
     .poll(() =>
       galilearn.evaluate((image) => (image as HTMLImageElement).naturalWidth),
     )
     .toBe(1440);
-  await page.getByRole("button", { name: "Switch to night mode" }).click();
-  await expect(town).toHaveAttribute("src", "/projects/tiny-town-night.png");
-  await expect
-    .poll(() => town.evaluate((image) => (image as HTMLImageElement).complete))
-    .toBe(true);
-  await page.getByRole("button", { name: /Tiny Town/ }).click();
-  await expect(page.getByRole("dialog").getByRole("img")).toBeVisible();
-  await page.keyboard.press("Escape");
 });
 
-test("portfolio content, contact links, and accessible project dialog", async ({
+test("portfolio content, contact links, and shareable project page", async ({
   page,
 }) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "AI products",
+    "Let me show",
   );
-  await page.getByRole("button", { name: /01.*PRODUCTION.*Recollia/s }).click();
-  await expect(page.getByRole("dialog")).toBeVisible();
-  await expect(
-    page.getByRole("dialog").getByRole("heading", { level: 2 }),
-  ).toHaveText("Recollia AI Tutor");
-  await expect(page.getByRole("dialog")).toContainText("May–October 2026");
-  await page.keyboard.press("Escape");
-  await expect(page.getByRole("dialog")).not.toBeVisible();
-  await expect(
-    page.getByText("Grounded answers", { exact: true }),
-  ).toBeVisible();
-  await expect(page.getByRole("link", { name: /Email me/ })).toHaveAttribute(
+  await page.getByRole("link", { name: "Skip introduction" }).click();
+  await page.getByRole("link", { name: "Open the full project" }).click();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "Recollia AI Tutor",
+  );
+  await expect(page.locator(".project-page-role")).toContainText(
+    "October 2026",
+  );
+  await page.getByRole("link", { name: "Back to notebook" }).click();
+  await expect(page.locator(".notebook-spread")).toBeVisible();
+  await page
+    .getByRole("navigation", { name: "Main navigation" })
+    .getByRole("link", { name: "Contact", exact: true })
+    .click();
+  await expect(page.getByRole("link", { name: "Email me" })).toHaveAttribute(
     "href",
     "mailto:work.khushisahni@gmail.com",
   );
-  await expect(page.getByRole("link", { name: /LinkedIn/ })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: "LinkedIn" })).toHaveAttribute(
     "href",
     "https://www.linkedin.com/in/khushi-sahni",
   );
@@ -94,7 +97,9 @@ test("lab checks provenance, teaches the companion, and exposes decision history
     page.getByRole("figure", { name: "Co-op evidence bridge" }),
   ).toHaveAttribute("data-tiles", "3");
   await expect(
-    page.getByText("Source and claim checked. You can explore GitHub MCP next."),
+    page.getByText(
+      "Source and claim checked. You can explore GitHub MCP next.",
+    ),
   ).toBeVisible();
   await expect(
     page.getByText("Evidence checking", { exact: true }),
@@ -105,31 +110,44 @@ test("lab checks provenance, teaches the companion, and exposes decision history
   ).toBeVisible();
   await page.getByRole("link", { name: /Back to portfolio/ }).click();
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "AI products",
+    "A closer look",
   );
 });
 
 test("companion grows from exploration without counting the same project twice", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("/#about");
   const current = page.locator('.growth-stop[aria-current="step"]');
   await expect(current).toContainText("The seed");
-  for (const projectName of [
-    /01.*PRODUCTION.*Recollia/s,
-    /01.*PRODUCTION.*Recollia/s,
-  ]) {
-    await page.getByRole("button", { name: projectName }).click();
-    await page.keyboard.press("Escape");
+  for (const id of ["recollia", "recollia"]) {
+    await page.evaluate((id) => {
+      location.hash = `project/${id}`;
+    }, id);
+    await page.getByRole("heading", { level: 1 }).waitFor();
+    await page
+      .getByRole("navigation", { name: "Main navigation" })
+      .getByRole("link", { name: "About", exact: true })
+      .click();
   }
   await expect(current).toContainText("The learner");
   await expect(page.locator(".companion-level")).toContainText("01");
-  for (const projectName of [
-    /02.*DEVELOPER.*GitHub MCP/s,
-    /03.*HACKATHON.*KiranaLedger/s,
-  ]) {
-    await page.getByRole("button", { name: projectName }).click();
-    await page.keyboard.press("Escape");
+  for (const id of ["github-mcp", "kiranaledger"]) {
+    await page
+      .getByRole("navigation", { name: "Main navigation" })
+      .getByRole("link", { name: "Work", exact: true })
+      .click();
+    await page
+      .getByRole("link", {
+        name: id === "github-mcp" ? "GitHub MCP" : "KiranaLedger",
+        exact: true,
+      })
+      .click();
+    await page.getByRole("link", { name: "Open the full project" }).click();
+    await page
+      .getByRole("navigation", { name: "Main navigation" })
+      .getByRole("link", { name: "About", exact: true })
+      .click();
   }
   await expect(current).toContainText("The guide");
 });
@@ -163,6 +181,15 @@ for (const width of [320, 390, 768, 1024, 1440]) {
         () => document.documentElement.scrollWidth <= window.innerWidth,
       ),
     ).toBe(true);
+    for (const route of ["work/recollia", "project/galilearn"]) {
+      await page.goto(`/#${route}`);
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+      ).toBe(true);
+    }
     await page.goto("/#lab");
     await page
       .getByRole("button", { name: "Hand controls", exact: true })
@@ -253,7 +280,7 @@ test("real hand model initializes on synthetic camera and tracks stop on close",
   });
   await page.getByRole("link", { name: /Back to portfolio/ }).click();
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "AI products",
+    "A closer look",
   );
   expect(
     await page.evaluate(() =>
