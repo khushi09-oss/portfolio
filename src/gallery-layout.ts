@@ -7,11 +7,13 @@ export function galleryPosition(
 ) {
   const blend = Math.min(1, progress / 0.65);
   const eased = blend * blend * (3 - 2 * blend);
-  const orbit = (Math.max(0, progress - 0.35) / 0.65) * Math.PI * 0.5;
-  const angle = (index * Math.PI * 2) / count - Math.PI * 0.5 + orbit;
+  const orbit = (Math.max(0, progress - 0.65) / 0.35) * Math.PI * 0.5;
+  const columns = Math.min(3, count);
+  // Follow the grid perimeter so bottom-row cards never cut through the top row.
+  const slot = index < columns ? index : count - 1 - index + columns;
+  const angle = (slot * Math.PI * 2) / count - Math.PI * (5 / 6) + orbit;
   const radiusX = width * 0.34;
   const radiusY = height * 0.29;
-  const columns = Math.min(3, count);
   const rows = Math.ceil(count / columns);
   const row = Math.floor(index / columns);
   const rowCount = Math.min(columns, count - row * columns);
