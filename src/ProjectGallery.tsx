@@ -132,7 +132,11 @@ export function ProjectGallery({
             >
               <div className="gallery-card-paper">
                 <div className="gallery-card-image" aria-hidden="true">
-                  <ProjectArtwork project={project} night={night} />
+                  <ProjectArtwork
+                    project={project}
+                    night={night}
+                    sizes="(min-width: 901px) 180px, (min-width: 701px) 24vw, 45vw"
+                  />
                 </div>
                 <div className="gallery-card-label">
                   <span aria-hidden="true">

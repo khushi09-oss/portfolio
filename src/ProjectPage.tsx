@@ -76,7 +76,7 @@ export function ProjectPage({
             <small>{next.summary}</small>
           </span>
           <span className="next-project-art" aria-hidden="true">
-            <ProjectArtwork project={next} night={night} />
+            <ProjectArtwork project={next} night={night} sizes="150px" />
           </span>
           <Icon name="arrow" size={22} />
         </a>

@@ -12,7 +12,14 @@ export type Project = {
   link?: string;
   demo?: string;
   status: string;
-  preview?: { src: string; nightSrc?: string; alt: string; note: string };
+  preview?: {
+    src: string;
+    nightSrc?: string;
+    srcSet?: string;
+    nightSrcSet?: string;
+    alt: string;
+    note: string;
+  };
 };
 
 export const projects: Project[] = [
@@ -105,6 +112,8 @@ export const projects: Project[] = [
     name: "Galilearn",
     preview: {
       src: "/projects/galilearn-prototype.jpg",
+      srcSet:
+        "/projects/galilearn-prototype-480.webp 480w, /projects/galilearn-prototype-960.webp 960w, /projects/galilearn-prototype-1440.webp 1440w",
       alt: "Galilearn's coded design prototype, with illustrated watercolor planets and its learning interface",
       note: "Design prototype · In development",
     },
@@ -131,6 +140,10 @@ export const projects: Project[] = [
     preview: {
       src: "/projects/tiny-town-day.png",
       nightSrc: "/projects/tiny-town-night.png",
+      srcSet:
+        "/projects/tiny-town-day-480.webp 480w, /projects/tiny-town-day-960.webp 960w, /projects/tiny-town-day-1440.webp 1440w",
+      nightSrcSet:
+        "/projects/tiny-town-night-480.webp 480w, /projects/tiny-town-night-960.webp 960w, /projects/tiny-town-night-1440.webp 1440w",
       alt: "Tiny Town's pixel village with thirty residents, cottages, and replay controls",
       note: "Demo replay · Mock decisions",
     },

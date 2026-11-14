@@ -156,12 +156,14 @@ const defaultIllustration = (
 export function ProjectArtwork({
   project,
   night,
+  sizes,
 }: {
   project: Project;
   night: boolean;
+  sizes?: string;
 }) {
   if (project.preview)
-    return <ProjectPreview project={project} night={night} />;
+    return <ProjectPreview project={project} night={night} sizes={sizes} />;
   const label = labels[project.id] ?? project.name;
   return (
     <figure className="project-illustration" aria-label={label}>

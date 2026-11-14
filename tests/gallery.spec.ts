@@ -1,6 +1,24 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
+test("gallery cards use smaller actual screenshots in both themes", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  const image = page
+    .locator(".gallery-card")
+    .filter({ hasText: "Tiny Town" })
+    .locator("img");
+  await expect
+    .poll(() => image.evaluate((image: HTMLImageElement) => new URL(image.currentSrc).pathname))
+    .toBe("/projects/tiny-town-day-480.webp");
+  await page.getByRole("button", { name: "Switch to night mode" }).click();
+  await expect
+    .poll(() => image.evaluate((image: HTMLImageElement) => new URL(image.currentSrc).pathname))
+    .toBe("/projects/tiny-town-night-480.webp");
+});
+
 test("every project name stays uncovered throughout the ring transition", async ({
   page,
 }) => {
