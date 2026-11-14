@@ -1,5 +1,6 @@
 import { Companion } from "./Companion";
 import { Icon } from "./Icon";
+import { useState } from "react";
 
 export function ProfilePage({
   contact,
@@ -8,16 +9,48 @@ export function ProfilePage({
   contact: boolean;
   discoveries: string[];
 }) {
+  const [copyMessage, setCopyMessage] = useState("");
   if (contact)
     return (
       <section className="contact-section page-width" id="contact">
         <p className="eyebrow">CONTACT</p>
         <h1 tabIndex={-1}>Get in touch.</h1>
         <div className="contact-bottom">
-          <p>
-            For roles, freelance work, or collaborations, email me with what
-            you’re building.
-          </p>
+          <div className="contact-copy">
+            <p>
+              I can help build an AI feature, connect it to your backend, or
+              turn a prototype into a working interface.
+            </p>
+            <p>
+              Tell me what you’re building, where you need help and your
+              timeline. For engineering roles, send the role and team details.
+            </p>
+            <div className="contact-address">
+              <a href="mailto:work.khushisahni@gmail.com">
+                work.khushisahni@gmail.com
+              </a>
+              <button
+                className="text-button"
+                onClick={async () => {
+                  try {
+                    if (!navigator.clipboard)
+                      throw new Error("Clipboard unavailable");
+                    await navigator.clipboard.writeText(
+                      "work.khushisahni@gmail.com",
+                    );
+                    setCopyMessage("Email copied.");
+                  } catch {
+                    setCopyMessage("Select the address above to copy it.");
+                  }
+                }}
+              >
+                Copy email
+              </button>
+            </div>
+            <p className="copy-status" role="status">
+              {copyMessage}
+            </p>
+          </div>
           <div className="contact-links">
             <a
               className="inline-link"

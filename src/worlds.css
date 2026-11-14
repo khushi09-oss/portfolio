@@ -10,18 +10,18 @@
   max-width: 610px;
 }
 .coop-world {
-  --world-sky-top: #e7ede6;
-  --world-sky-bottom: #eee9e0;
+  --world-sky-top: #eae6dd;
+  --world-sky-bottom: #f5f2eb;
   --world-cloud: #f7f6ee;
-  --world-distance: #d7ddd0;
-  --world-rock: #bbb8a7;
-  --world-grass: #7b8a72;
-  --world-line: #535d54;
-  --world-paper: #ece9db;
-  --world-metal: #7d8580;
+  --world-distance: #d8d1cb;
+  --world-rock: #c0b8b1;
+  --world-grass: #8b7e83;
+  --world-line: #62555d;
+  --world-paper: #f5f2eb;
+  --world-metal: #8b7e83;
   --world-accent: #ae7e87;
-  --world-ink: #303a32;
-  --world-leaf: #718669;
+  --world-ink: #332c31;
+  --world-leaf: #8e707a;
   --world-moon: #f5e7b6;
   --world-lamp: #f1d39d;
   --world-rain: #c6d4dc;
@@ -35,18 +35,18 @@
   isolation: isolate;
 }
 .coop-world.is-night {
-  --world-sky-top: #222d35;
-  --world-sky-bottom: #39383b;
+  --world-sky-top: #262229;
+  --world-sky-bottom: #322b32;
   --world-cloud: #455058;
-  --world-distance: #303e40;
+  --world-distance: #3b323b;
   --world-rock: #485151;
-  --world-grass: #617363;
+  --world-grass: #77606b;
   --world-line: #9da89c;
   --world-paper: #c1c8b9;
   --world-metal: #838e8b;
   --world-accent: #bc879b;
   --world-ink: #e4e7d8;
-  --world-leaf: #536f60;
+  --world-leaf: #715c68;
   --world-moon: #dbcda9;
   --world-lamp: #f1c68b;
 }

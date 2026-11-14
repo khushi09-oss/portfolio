@@ -137,7 +137,119 @@
 .lab-project-exit {
   margin-top: 24px;
 }
+.lab-page h1,
+.lab-page h2 {
+  font-family: inherit;
+  font-weight: 550;
+  letter-spacing: -0.04em;
+}
+.lab-heading {
+  align-items: start;
+}
+.lab-heading > div {
+  min-width: 0;
+}
+.lab-heading > .button {
+  flex-shrink: 0;
+}
+.lab-workbench .machine-controls {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  width: 100%;
+  gap: 6px;
+  border: 0;
+  background: transparent;
+}
+.lab-workbench .machine-controls button {
+  min-height: 44px;
+  padding: 10px 8px;
+  font-size: 12px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+}
+.source-option strong {
+  font-size: 14px;
+}
+.source-option code {
+  font-size: 12px;
+}
+.camera-note {
+  font-size: 12px;
+}
+.companion-skills > span {
+  font-size: 11px;
+}
+.contact-copy {
+  max-width: 620px;
+}
+.contact-copy > p {
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+.contact-address {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+}
+.contact-address a {
+  overflow-wrap: anywhere;
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.contact-address .text-button {
+  min-height: 44px;
+  font-size: 13px;
+}
+.contact-copy .copy-status {
+  min-height: 24px;
+  font-size: 13px;
+  color: var(--rose);
+}
 @media (max-width: 700px) {
+  .lab-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .lab-heading h1 {
+    font-size: 40px;
+    letter-spacing: -0.045em;
+  }
+  .lab-heading > .button {
+    justify-self: start;
+    font-size: 12px;
+    gap: 8px;
+    padding: 10px 14px;
+  }
+  .lab-heading > .button > svg {
+    width: 18px;
+    height: 18px;
+  }
+  .lab-workbench .machine-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .lab-machine-foot {
+    flex-wrap: wrap;
+    font-size: 11px;
+  }
+  .lab-machine-foot .text-button {
+    font-size: 12px;
+    min-height: 44px;
+  }
+  .lab-machine-foot > span {
+    max-width: none;
+  }
+  .lab-heading .eyebrow {
+    font-size: 10px;
+  }
+  .contact-copy > p {
+    font-size: 15px;
+  }
+  .contact-address {
+    font-size: 14px;
+  }
   .welcome-intro > .welcome-work-link {
     margin-top: 18px;
     font-size: 12px;

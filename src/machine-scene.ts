@@ -45,7 +45,7 @@ export function mountMachine(
     roughness: 0.2,
   });
   const dark = new THREE.MeshStandardMaterial({
-    color: "#353b3c",
+    color: "#343038",
     metalness: 0.6,
     roughness: 0.4,
   });
@@ -62,7 +62,7 @@ export function mountMachine(
     side: THREE.DoubleSide,
   });
   const glass = new THREE.MeshPhysicalMaterial({
-    color: night ? "#647e86" : "#e3eeeb",
+    color: night ? "#827080" : "#e9dce1",
     transparent: true,
     opacity: night ? 0.05 : 0.19,
     metalness: 0.12,
@@ -223,7 +223,7 @@ export function mountMachine(
   const floor = new THREE.Mesh(
     new THREE.PlaneGeometry(80, 80),
     new THREE.ShadowMaterial({
-      color: "#1f2424",
+      color: "#29232b",
       opacity: night ? 0.22 : 0.13,
     }),
   );
