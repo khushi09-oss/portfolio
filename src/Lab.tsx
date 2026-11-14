@@ -6,6 +6,7 @@ import { iterations } from "./data";
 import { checkSource, sources } from "./evidence";
 import { claims, claimIsSupported } from "./companion-progress";
 import { CoopWorld } from "./CoopWorld";
+import { LoadBoundary } from "./LoadBoundary";
 
 const HandControls = lazy(() => import("./HandControls"));
 
@@ -112,16 +113,18 @@ export function Lab({
           </div>
         </div>
         {handPanel && (
-          <Suspense
-            fallback={
-              <aside className="hand-panel">Loading hand controls…</aside>
-            }
-          >
-            <HandControls
-              onPosition={(p) => setStage(Math.min(3, Math.floor(p * 4)))}
-              onClose={() => setHandPanel(false)}
-            />
-          </Suspense>
+          <LoadBoundary panel onClose={() => setHandPanel(false)}>
+            <Suspense
+              fallback={
+                <aside className="hand-panel">Loading hand controls…</aside>
+              }
+            >
+              <HandControls
+                onPosition={(p) => setStage(Math.min(3, Math.floor(p * 4)))}
+                onClose={() => setHandPanel(false)}
+              />
+            </Suspense>
+          </LoadBoundary>
         )}
       </div>
       <div className="lab-bottom-grid">

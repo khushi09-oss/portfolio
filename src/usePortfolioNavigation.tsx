@@ -9,6 +9,23 @@ import {
 import { homeHref, parseRoute, routeKey } from "./routes";
 
 type Position = { key: string; y: number; focus?: string };
+function returnPositions(state: unknown) {
+  const positions = new Map<string, Position>();
+  if (
+    !state ||
+    typeof state !== "object" ||
+    !("portfolioReturns" in state) ||
+    !Array.isArray(state.portfolioReturns)
+  )
+    return positions;
+  for (const item of state.portfolioReturns.slice(-50)) {
+    if (!item || typeof item !== "object" || typeof item.key !== "string")
+      continue;
+    const position = savedPosition({ portfolioPosition: item }, item.key);
+    if (position) positions.set(position.key, position);
+  }
+  return positions;
+}
 function savedPosition(state: unknown, key: string): Position | undefined {
   if (!state || typeof state !== "object" || !("portfolioPosition" in state))
     return;
@@ -46,7 +63,7 @@ export function usePortfolioNavigation() {
       ),
     };
   });
-  const positions = useRef(new Map<string, Position>());
+  const positions = useRef(returnPositions(history.state));
   const returning = useRef(false);
   const route = parseRoute(state.hash);
   useEffect(() => {
@@ -59,6 +76,14 @@ export function usePortfolioNavigation() {
       const position = returning.current
         ? positions.current.get(key) || savedPosition(history.state, key)
         : savedPosition(history.state, key);
+      history.replaceState(
+        {
+          ...history.state,
+          portfolioReturns: [...positions.current.values()].slice(-50),
+          ...(position ? { portfolioPosition: position } : {}),
+        },
+        "",
+      );
       returning.current = false;
       setState((previous) => {
         const prior = parseRoute(previous.hash);
@@ -86,7 +111,14 @@ export function usePortfolioNavigation() {
   function remember(focus?: string) {
     const position = { key: routeKey(route), y: scrollY, focus };
     positions.current.set(position.key, position);
-    history.replaceState({ ...history.state, portfolioPosition: position }, "");
+    history.replaceState(
+      {
+        ...history.state,
+        portfolioPosition: position,
+        portfolioReturns: [...positions.current.values()].slice(-50),
+      },
+      "",
+    );
   }
   function onLinkCapture(event: MouseEvent<HTMLElement>) {
     if (

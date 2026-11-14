@@ -6,6 +6,7 @@ import { Icon } from "./Icon";
 import { Introduction, Notebook } from "./Notebook";
 import { ProfilePage } from "./ProfilePage";
 import { ProjectPage } from "./ProjectPage";
+import { LoadBoundary } from "./LoadBoundary";
 import "./notebook.css";
 import "./gallery.css";
 import "./flow.css";
@@ -162,27 +163,29 @@ export default function App() {
           <span className="toggle-thumb" />
         </button>
       </header>
-      <Suspense
-        fallback={
-          <main
-            id="main"
-            tabIndex={-1}
-            className="page-width route-loading"
-            role="status"
-          >
-            Opening the lab…
-          </main>
-        }
-      >
-        <FocusPage
-          hash={hash}
-          position={navigation.position}
-          selectionOnly={navigation.selectionOnly}
-          intro={route.name === "home" && route.intro}
+      <LoadBoundary key={hash}>
+        <Suspense
+          fallback={
+            <main
+              id="main"
+              tabIndex={-1}
+              className="page-width route-loading"
+              role="status"
+            >
+              Opening the lab…
+            </main>
+          }
         >
-          {content}
-        </FocusPage>
-      </Suspense>
+          <FocusPage
+            hash={hash}
+            position={navigation.position}
+            selectionOnly={navigation.selectionOnly}
+            intro={route.name === "home" && route.intro}
+          >
+            {content}
+          </FocusPage>
+        </Suspense>
+      </LoadBoundary>
       <footer className="site-footer page-width">
         <span>© {new Date().getFullYear()} Khushi Sahni</span>
         <a
