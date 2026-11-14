@@ -3,6 +3,7 @@ import { projects, type Project } from "./data";
 import { Icon } from "./Icon";
 import { ProjectArtwork } from "./ProjectArtwork";
 import { ProjectGallery } from "./ProjectGallery";
+import { ProjectActions } from "./ProjectActions";
 
 export function NotebookGuide() {
   return (
@@ -28,7 +29,15 @@ export function NotebookGuide() {
   );
 }
 
-export function Introduction({ night }: { night: boolean }) {
+export function Introduction({
+  night,
+  galleryPage = 0,
+  onGalleryPage,
+}: {
+  night: boolean;
+  galleryPage?: number;
+  onGalleryPage?: (page: number) => void;
+}) {
   const [step, setStep] = useState(0);
   const steps = [
     {
@@ -62,8 +71,8 @@ export function Introduction({ night }: { night: boolean }) {
             across models, backend systems, and interfaces to turn ideas into
             useful software.
           </p>
-          <a className="inline-link" href="#work/recollia">
-            Skip introduction <Icon name="diagonal" size={14} />
+          <a className="button primary welcome-work-link" href="#work/recollia">
+            Explore my work <Icon name="diagonal" size={14} />
           </a>
           <button
             className="tour-link"
@@ -77,13 +86,17 @@ export function Introduction({ night }: { night: boolean }) {
               target?.querySelector("h2")?.focus({ preventScroll: true });
             }}
           >
-            Or take the short introduction ↓
+            How I work ↓
           </button>
           <p className="welcome-footnote">
             Previously ML Engineer at Recollia · May–October 2026
           </p>
         </div>
-        <ProjectGallery night={night} />
+        <ProjectGallery
+          night={night}
+          selectedPage={galleryPage}
+          onSelectPage={onGalleryPage}
+        />
       </section>
       <section
         className="welcome-tour page-width"
@@ -91,8 +104,8 @@ export function Introduction({ night }: { night: boolean }) {
         aria-label="Short introduction"
       >
         <div className="welcome-tour-intro">
-          <p className="eyebrow">A LITTLE CONTEXT</p>
-          <h2 tabIndex={-1}>A quick introduction.</h2>
+          <p className="eyebrow">HOW I WORK</p>
+          <h2 tabIndex={-1}>From the model to the interface.</h2>
           <p>
             Three short stops through my work. You can open any project directly
             from the gallery or the notebook.
@@ -191,15 +204,19 @@ export function Notebook({
       >
         <div className="notebook-page notebook-left">
           <p className="eyebrow">{project.category}</p>
-          <h2>{project.name}</h2>
+          <h2 tabIndex={-1}>{project.name}</h2>
           <p className="notebook-role">{project.role}</p>
           <h3>What it does</h3>
-          <p>{project.details[0]}</p>
+          <p>{project.overview}</p>
           <h3>My contribution</h3>
-          <p>{project.details[1]}</p>
-          <a className="inline-link" href={`#project/${project.id}`}>
+          <p>{project.contribution}</p>
+          <a
+            className="button primary notebook-read-link"
+            href={`#project/${project.id}`}
+          >
             Open the full project <Icon name="diagonal" size={16} />
           </a>
+          <ProjectActions project={project} />
         </div>
         <div className="notebook-binding" aria-hidden="true" />
         <div className="notebook-page notebook-right">
@@ -214,7 +231,7 @@ export function Notebook({
       <div className="notebook-dock">
         <NotebookGuide />
         <p>Choose a project tab. Open the full project for a closer look.</p>
-        <a className="inline-link" href="#home">
+        <a className="inline-link" href="#home?intro=1">
           Replay introduction <Icon name="diagonal" size={13} />
         </a>
       </div>

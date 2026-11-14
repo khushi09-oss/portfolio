@@ -32,7 +32,7 @@ test("gallery gathers and rotates on scroll while project links stay usable", as
     .not.toBe(before);
   await first.focus();
   await page.keyboard.press("Enter");
-  await expect(page).toHaveURL(/#project\/recollia$/);
+  await expect(page).toHaveURL(/#project\/recollia\?from=gallery/);
 });
 
 test("reduced motion keeps a static gallery and dark surfaces use charcoal", async ({

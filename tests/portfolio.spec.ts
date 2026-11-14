@@ -40,7 +40,7 @@ test("portfolio content, contact links, and shareable project page", async ({
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "Let me show",
   );
-  await page.getByRole("link", { name: "Skip introduction" }).click();
+  await page.getByRole("link", { name: "Explore my work" }).click();
   await page.getByRole("link", { name: "Open the full project" }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "Recollia AI Tutor",

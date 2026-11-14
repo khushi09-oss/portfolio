@@ -2,15 +2,22 @@ import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { projects, type Project } from "./data";
 import { ProjectArtwork } from "./ProjectArtwork";
 import { galleryPosition } from "./gallery-layout";
+import { projectHref } from "./routes";
 
 export function ProjectGallery({
   night,
   items = projects,
+  selectedPage,
+  onSelectPage,
 }: {
   night: boolean;
   items?: readonly Project[];
+  selectedPage?: number;
+  onSelectPage?: (page: number) => void;
 }) {
-  const [page, setPage] = useState(0);
+  const [localPage, setLocalPage] = useState(0);
+  const page = selectedPage ?? localPage;
+  const setPage = onSelectPage ?? setLocalPage;
   const pageCount = Math.max(1, Math.ceil(items.length / 6));
   const currentPage = Math.min(page, pageCount - 1);
   const visible = useMemo(
@@ -116,7 +123,7 @@ export function ProjectGallery({
             <a
               className="gallery-card"
               key={project.id}
-              href={`#project/${project.id}`}
+              href={projectHref(project.id, { page: currentPage })}
             >
               <div className="gallery-card-paper">
                 <div className="gallery-card-image" aria-hidden="true">

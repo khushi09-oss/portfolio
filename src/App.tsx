@@ -1,18 +1,14 @@
-import {
-  lazy,
-  Suspense,
-  useEffect,
-  useLayoutEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
 import { projects } from "./data";
+import { projectHref } from "./routes";
+import { FocusPage, usePortfolioNavigation } from "./usePortfolioNavigation";
 import { Icon } from "./Icon";
 import { Introduction, Notebook } from "./Notebook";
 import { ProfilePage } from "./ProfilePage";
 import { ProjectPage } from "./ProjectPage";
 import "./notebook.css";
 import "./gallery.css";
+import "./flow.css";
 
 const Lab = lazy(() =>
   import("./Lab").then((module) => ({ default: module.Lab })),
@@ -26,49 +22,22 @@ function getNight() {
   }
 }
 
-function readRoute(hash: string) {
-  const [name, id, extra] = hash.replace(/^#/, "").split("/");
-  const project = projects.find((item) => item.id === (id || "recollia"));
-  if (
-    (name === "work" || name === "project") &&
-    project &&
-    !extra &&
-    (name === "work" || id)
-  )
-    return { name, project };
-  if (!id && ["", "home", "lab", "about", "contact"].includes(name))
-    return { name: name || "home" };
-  return { name: "not-found" };
-}
-
-function FocusPage({ hash, children }: { hash: string; children: ReactNode }) {
-  useLayoutEffect(() => {
-    const heading = document.querySelector<HTMLElement>("main h1");
-    heading?.focus({ preventScroll: true });
-    window.scrollTo({ top: 0, behavior: "instant" });
-    document.title = `${heading?.textContent || "Notebook"} | Khushi Sahni`;
-  }, [hash]);
-  return children;
-}
-
 export default function App() {
   const [night, setNight] = useState(getNight);
-  const [hash, setHash] = useState(() => window.location.hash);
-  const route = readRoute(hash);
-  const [notebookId, setNotebookId] = useState(
-    () => route.project?.id ?? "recollia",
-  );
-  const [learned, setLearned] = useState<Set<string>>(
-    () =>
-      new Set(
-        route.name === "project" && route.project ? [route.project.id] : [],
-      ),
-  );
+  const navigation = usePortfolioNavigation();
+  const { route, hash, visited: learned } = navigation;
   const currentProject =
-    route.project ??
-    projects.find((item) => item.id === notebookId) ??
+    ("project" in route ? route.project : undefined) ??
+    projects.find((item) => item.id === navigation.notebookId) ??
     projects[0];
   const workHref = `#work/${currentProject.id}`;
+  const labCaseHref =
+    route.name === "lab" && route.fromProject
+      ? projectHref(
+          route.fromProject,
+          route.fromGallery ? { page: route.page } : undefined,
+        )
+      : undefined;
   useEffect(() => {
     document.documentElement.dataset.theme = night ? "night" : "day";
     try {
@@ -77,40 +46,42 @@ export default function App() {
       /* Theme storage is optional. */
     }
   }, [night]);
-  useEffect(() => {
-    function navigate() {
-      const nextHash = window.location.hash;
-      setHash(nextHash);
-      const next = readRoute(nextHash);
-      if (next.project) setNotebookId(next.project.id);
-      if (next.name === "project" && next.project) {
-        const id = next.project.id;
-        setLearned((previous) => new Set(previous).add(id));
-      }
-    }
-    window.addEventListener("hashchange", navigate);
-    return () => window.removeEventListener("hashchange", navigate);
-  }, []);
   let content: ReactNode;
   if (route.name === "lab")
     content = (
       <Lab
+        backHref={labCaseHref}
+        caseHref={labCaseHref}
+        backLabel={
+          route.fromProject
+            ? `Back to ${projects.find((item) => item.id === route.fromProject)?.name}`
+            : undefined
+        }
         night={night}
         discoveries={[...learned]}
-        onLearn={() =>
-          setLearned((previous) => new Set(previous).add("source-finding"))
-        }
+        onLearn={() => navigation.discover("source-finding")}
       />
     );
   else
     content = (
       <main id="main" tabIndex={-1}>
-        {route.name === "home" && <Introduction key={hash} night={night} />}
+        {route.name === "home" && (
+          <Introduction
+            night={night}
+            galleryPage={route.page}
+            onGalleryPage={navigation.selectGalleryPage}
+          />
+        )}
         {route.name === "work" && (
           <Notebook project={currentProject} night={night} />
         )}
         {route.name === "project" && (
-          <ProjectPage project={currentProject} night={night} />
+          <ProjectPage
+            project={currentProject}
+            night={night}
+            fromGallery={route.fromGallery}
+            galleryPage={route.page}
+          />
         )}
         {(route.name === "about" || route.name === "contact") && (
           <ProfilePage
@@ -131,7 +102,7 @@ export default function App() {
       </main>
     );
   return (
-    <>
+    <div className="portfolio-shell" onClickCapture={navigation.onLinkCapture}>
       <a
         className="skip-link"
         href="#main"
@@ -203,7 +174,14 @@ export default function App() {
           </main>
         }
       >
-        <FocusPage hash={hash}>{content}</FocusPage>
+        <FocusPage
+          hash={hash}
+          position={navigation.position}
+          selectionOnly={navigation.selectionOnly}
+          intro={route.name === "home" && route.intro}
+        >
+          {content}
+        </FocusPage>
       </Suspense>
       <footer className="site-footer page-width">
         <span>© {new Date().getFullYear()} Khushi Sahni</span>
@@ -218,6 +196,6 @@ export default function App() {
           Get in touch <Icon name="diagonal" size={13} />
         </a>
       </footer>
-    </>
+    </div>
   );
 }

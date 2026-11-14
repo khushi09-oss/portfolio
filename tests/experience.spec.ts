@@ -20,7 +20,7 @@ test("introduction is optional and opens the project notebook", async ({
     page.getByRole("group", { name: "Notebook projects" }).getByRole("link"),
   ).toHaveCount(6);
   await page.getByRole("link", { name: "Replay introduction" }).click();
-  await page.getByRole("link", { name: "Skip introduction" }).click();
+  await page.getByRole("link", { name: "Explore my work" }).click();
   await expect(page.locator(".notebook-spread")).toBeVisible();
 });
 
@@ -106,5 +106,7 @@ test("entry, notebook and project pages support keyboard and automated accessibi
   await page.getByRole("link", { name: "Tiny Town", exact: true }).focus();
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/#work\/tiny-town$/);
-  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
+  await expect(
+    page.getByRole("heading", { name: "Tiny Town", exact: true }),
+  ).toBeFocused();
 });

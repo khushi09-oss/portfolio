@@ -13,10 +13,16 @@ export function Lab({
   night,
   discoveries,
   onLearn,
+  backHref = "#work/github-mcp",
+  backLabel = "Back to portfolio",
+  caseHref = "#project/github-mcp",
 }: {
   night: boolean;
   discoveries: string[];
   onLearn: () => void;
+  backHref?: string;
+  backLabel?: string;
+  caseHref?: string;
 }) {
   const [stage, setStage] = useState(0);
   const [iteration, setIteration] = useState(0);
@@ -57,15 +63,13 @@ export function Lab({
   }
   return (
     <main id="main" tabIndex={-1} className="lab-page page-width">
-      <a className="back-link" href="#work/github-mcp">
-        ← Back to portfolio
+      <a className="back-link" href={backHref} data-return>
+        ← {backLabel}
       </a>
       <div className="lab-heading">
         <div>
           <p className="eyebrow">INTERACTIVE EXAMPLE</p>
-          <h1 tabIndex={-1}>
-            Try a source check
-          </h1>
+          <h1 tabIndex={-1}>Try a source check</h1>
           <p className="lead">
             Match a source to an answer, then check what it supports.
           </p>
@@ -180,9 +184,7 @@ export function Lab({
               </div>
               {sourceVerified && (
                 <div className="claim-task">
-                  <p className="eyebrow">
-                    WHAT DOES THE SOURCE SUPPORT?
-                  </p>
+                  <p className="eyebrow">WHAT DOES THE SOURCE SUPPORT?</p>
                   <div className="claim-options">
                     {claims.map((claim) => (
                       <button
@@ -261,9 +263,14 @@ export function Lab({
         learned={discoveries.length}
         discoveries={discoveries}
         message={
-          complete ? "Source and claim checked. You can explore GitHub MCP next." : undefined
+          complete
+            ? "Source and claim checked. You can explore GitHub MCP next."
+            : undefined
         }
       />
+      <a className="inline-link lab-project-exit" href={caseHref} data-return>
+        Read about GitHub MCP <Icon name="arrow" size={16} />
+      </a>
     </main>
   );
 }
