@@ -11,15 +11,15 @@
   color: var(--text);
 }
 :root[data-theme="night"] {
-  --paper: #202323;
-  --surface: #2b302f;
+  --paper: #211f23;
+  --surface: #2c292f;
   --text: #f0ece4;
-  --muted: #b9b8b0;
-  --line: #4a4c46;
+  --muted: #beb5bf;
+  --line: #4c454f;
   --rose: #edb4c4;
   --rose-soft: #42343b;
   --button: #f0ece4;
-  --button-text: #202323;
+  --button-text: #211f23;
 }
 body {
   min-height: 100vh;

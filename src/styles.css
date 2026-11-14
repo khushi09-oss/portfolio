@@ -20,15 +20,15 @@
 }
 :root[data-theme="night"] {
   color-scheme: dark;
-  --paper: #171e1d;
-  --surface: #202927;
+  --paper: #211f23;
+  --surface: #2c292f;
   --text: #ece9df;
-  --muted: #b1b8af;
-  --line: #3b4641;
+  --muted: #beb5bf;
+  --line: #4c454f;
   --rose: #e1a2b1;
   --rose-soft: #413139;
   --button: #e5e6da;
-  --button-text: #1c2521;
+  --button-text: #211f23;
   background: var(--paper);
   color: var(--text);
 }

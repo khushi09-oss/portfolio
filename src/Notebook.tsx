@@ -2,6 +2,7 @@ import { useState } from "react";
 import { projects, type Project } from "./data";
 import { Icon } from "./Icon";
 import { ProjectArtwork } from "./ProjectArtwork";
+import { ProjectGallery } from "./ProjectGallery";
 
 export function NotebookGuide() {
   return (
@@ -48,69 +49,100 @@ export function Introduction({ night }: { night: boolean }) {
   ];
   const current = steps[step];
   return (
-    <section className="welcome page-width" aria-labelledby="welcome-title">
-      <div className="welcome-intro">
-        <p className="eyebrow">WELCOME / KHUSHI’S NOTEBOOK</p>
-        <h1 id="welcome-title" tabIndex={-1}>
-          Let me show <br />
-          you around.
-        </h1>
-        <p>
-          I’m Khushi, an ML engineer who builds AI products end to end. I work
-          across models, backend systems, and interfaces to turn ideas into
-          useful software.
-        </p>
-        <a className="inline-link" href="#work/recollia">
-          Skip introduction <Icon name="diagonal" size={14} />
-        </a>
-        <p className="welcome-footnote">
-          Previously ML Engineer at Recollia · May–October 2026
-        </p>
-      </div>
-      <div className="welcome-page">
-        <div className="welcome-page-top">
-          <NotebookGuide />
-          <span>INTRODUCTION {step + 1} / 3</span>
+    <>
+      <section className="welcome page-width" aria-labelledby="welcome-title">
+        <div className="welcome-intro">
+          <p className="eyebrow">WELCOME / KHUSHI’S NOTEBOOK</p>
+          <h1 id="welcome-title" tabIndex={-1}>
+            Let me show <br />
+            you around.
+          </h1>
+          <p>
+            I’m Khushi, an ML engineer who builds AI products end to end. I work
+            across models, backend systems, and interfaces to turn ideas into
+            useful software.
+          </p>
+          <a className="inline-link" href="#work/recollia">
+            Skip introduction <Icon name="diagonal" size={14} />
+          </a>
+          <button
+            className="tour-link"
+            onClick={() => {
+              const target = document.getElementById("introduction");
+              target?.scrollIntoView({
+                behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+                  ? "instant"
+                  : "smooth",
+              });
+              target?.querySelector("h2")?.focus({ preventScroll: true });
+            }}
+          >
+            Or take the short introduction ↓
+          </button>
+          <p className="welcome-footnote">
+            Previously ML Engineer at Recollia · May–October 2026
+          </p>
         </div>
-        <div className="welcome-state" key={step}>
-          <ProjectArtwork project={current.project} night={night} />
-          <div className="welcome-copy" aria-live="polite" aria-atomic="true">
-            <h2>{current.title}</h2>
-            <p>{current.copy}</p>
+        <ProjectGallery night={night} />
+      </section>
+      <section
+        className="welcome-tour page-width"
+        id="introduction"
+        aria-label="Short introduction"
+      >
+        <div className="welcome-tour-intro">
+          <p className="eyebrow">A LITTLE CONTEXT</p>
+          <h2 tabIndex={-1}>A quick introduction.</h2>
+          <p>
+            Three short stops through my work. You can open any project directly
+            from the gallery or the notebook.
+          </p>
+        </div>
+        <div className="welcome-page">
+          <div className="welcome-page-top">
+            <NotebookGuide />
+            <span>INTRODUCTION {step + 1} / 3</span>
+          </div>
+          <div className="welcome-state" key={step}>
+            <ProjectArtwork project={current.project} night={night} />
+            <div className="welcome-copy" aria-live="polite" aria-atomic="true">
+              <h2>{current.title}</h2>
+              <p>{current.copy}</p>
+            </div>
+          </div>
+          <div className="welcome-controls">
+            <button
+              className="welcome-back"
+              disabled={step === 0}
+              onClick={() => setStep((value) => value - 1)}
+            >
+              Back
+            </button>
+            <span
+              className="welcome-dots"
+              role="img"
+              aria-label={`Step ${step + 1} of 3`}
+            >
+              {steps.map((_, i) => (
+                <i key={i} className={i === step ? "active" : ""} />
+              ))}
+            </span>
+            {step === 2 ? (
+              <a className="button primary" href="#work/recollia">
+                Open my notebook <Icon name="arrow" size={16} />
+              </a>
+            ) : (
+              <button
+                className="button primary"
+                onClick={() => setStep((value) => value + 1)}
+              >
+                Next <Icon name="arrow" size={16} />
+              </button>
+            )}
           </div>
         </div>
-        <div className="welcome-controls">
-          <button
-            className="welcome-back"
-            disabled={step === 0}
-            onClick={() => setStep((value) => value - 1)}
-          >
-            Back
-          </button>
-          <span
-            className="welcome-dots"
-            role="img"
-            aria-label={`Step ${step + 1} of 3`}
-          >
-            {steps.map((_, i) => (
-              <i key={i} className={i === step ? "active" : ""} />
-            ))}
-          </span>
-          {step === 2 ? (
-            <a className="button primary" href="#work/recollia">
-              Open my notebook <Icon name="arrow" size={16} />
-            </a>
-          ) : (
-            <button
-              className="button primary"
-              onClick={() => setStep((value) => value + 1)}
-            >
-              Next <Icon name="arrow" size={16} />
-            </button>
-          )}
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 

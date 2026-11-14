@@ -12,6 +12,7 @@ import { Introduction, Notebook } from "./Notebook";
 import { ProfilePage } from "./ProfilePage";
 import { ProjectPage } from "./ProjectPage";
 import "./notebook.css";
+import "./gallery.css";
 
 const Lab = lazy(() =>
   import("./Lab").then((module) => ({ default: module.Lab })),

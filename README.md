@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Open the local URL printed by Vite. Follow the short introduction or choose **Skip introduction** to open the notebook. Select a project tab, then **Open the full project** for its contribution, design decisions and available code/demo links. Work and Contact are always reachable. The separate **Lab** contains the optional source-checking task; a wrong commit or an unretrieved file is rejected.
+Open the local URL printed by Vite. Scroll through the project gallery, open a project directly, or choose **Skip introduction** to open the notebook. The optional short introduction sits below the gallery. Select a project tab, then **Open the full project** for its contribution, design decisions and available code/demo links. Work and Contact are always reachable. The separate **Lab** contains the optional source-checking task; a wrong commit or an unretrieved file is rejected.
 
 The first `dev` or `build` command downloads Google's versioned hand model and verifies its SHA-256. The build copies the installed MediaPipe runtime into ignored local assets. Fonts, the model, and runtime assets are served from the same origin; no camera frames are uploaded. Network access is needed for the initial model download, not for subsequent cached builds.
 
@@ -28,6 +28,8 @@ The machine uses a small local evidence fixture. It does not call an LLM, connec
 Tiny Town's previews are captures of its actual interface with a staged mock replay, including day and night views. Galilearn's preview is captured from its coded design prototype and is labelled as a prototype. The portfolio does not ship either project's source code.
 
 ## Navigation and layout
+
+On larger screens, scrolling gathers the six project cards from a gallery into a rotating ring. Cards open their project pages and lift on hover or keyboard focus. The motion uses transforms updated only on scroll/resize; there is no continuous animation loop, scroll interception or extra animation dependency. Phones and reduced-motion mode use a static grid. Work and Contact stay available in the sticky header. Dark mode uses charcoal surfaces with muted rose accents.
 
 The introduction opens into one notebook, with all six project choices visible on phones. `#work/<project-id>` selects a spread, `#project/<project-id>` opens its full page, and `#about`, `#contact`, and `#lab` open the other pages. Browser Back/Forward and reload preserve the URL-selected project. Each project has a direct return to its notebook spread. Unknown pages show a recovery link. The introduction restarts only when explicitly opened or replayed.
 
