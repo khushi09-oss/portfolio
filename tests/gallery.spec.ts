@@ -1,6 +1,52 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
+test("every project name stays uncovered throughout the ring transition", async ({
+  page,
+}) => {
+  for (const viewport of [
+    { width: 1440, height: 900 },
+    { width: 1024, height: 600 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
+    for (const y of [0, 250, 450, 600]) {
+      await page.evaluate((y) => scrollTo({ top: y, behavior: "instant" }), y);
+      await expect
+        .poll(() =>
+          page.evaluate(() => {
+            const covered: string[] = [];
+            for (const label of document.querySelectorAll<HTMLElement>(
+              ".gallery-card-label strong",
+            )) {
+              const text = label.firstChild!;
+              for (let i = 0; i < (text.textContent?.length ?? 0); i++) {
+                const range = document.createRange();
+                range.setStart(text, i);
+                range.setEnd(text, i + 1);
+                const r = range.getBoundingClientRect();
+                const x = r.x + r.width / 2,
+                  y = r.y + r.height / 2;
+                if (
+                  y > 110 &&
+                  y < innerHeight &&
+                  x > 0 &&
+                  x < innerWidth &&
+                  document.elementFromPoint(x, y)?.closest(".gallery-card") !==
+                    label.closest(".gallery-card")
+                )
+                  covered.push(label.innerText);
+              }
+            }
+            return [...new Set(covered)];
+          }),
+        )
+        .toEqual([]);
+    }
+  }
+});
+
 test("gallery gathers and rotates on scroll while project links stay usable", async ({
   page,
 }) => {

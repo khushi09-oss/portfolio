@@ -51,7 +51,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 24%;
+  width: var(--card-width, 24%);
   transform: translate(-50%, -50%)
     translate(var(--card-x, 0px), var(--card-y, 0px))
     rotate(var(--card-tilt, 0deg));
@@ -119,7 +119,7 @@
 }
 .gallery-card-label strong {
   font-weight: 500;
-  font-size: clamp(10px, 0.85vw, 13px);
+  font-size: 12px;
   flex: 1;
 }
 .gallery-orbit {
@@ -147,7 +147,7 @@
   height: min(74svh, 700px);
 }
 .has-pages .gallery-card {
-  width: 22%;
+  width: var(--card-width, 22%);
 }
 .has-pages .gallery-orbit {
   margin-top: -22px;

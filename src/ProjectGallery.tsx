@@ -42,6 +42,11 @@ export function ProjectGallery({
       const bounds = track.getBoundingClientRect();
       const width = stage.clientWidth;
       const height = stage.clientHeight;
+      const cardWidth = Math.min(
+        width * 0.24,
+        (height - (pageCount > 1 ? 150 : 70)) * 0.29,
+      );
+      stage.style.setProperty("--card-width", `${cardWidth}px`);
       const progress = Math.max(
         0,
         Math.min(
