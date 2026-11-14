@@ -4,7 +4,7 @@ import AxeBuilder from "@axe-core/playwright";
 test("project previews show real interfaces and Tiny Town follows the selected theme", async ({
   page,
 }) => {
-  await page.goto("/#work/tiny-town");
+  await page.goto("/work/tiny-town");
   const town = page.getByRole("img", { name: /Tiny Town's pixel village/ });
   await expect(town).toBeVisible();
   await expect
@@ -68,7 +68,7 @@ test("portfolio content, contact links, and shareable project page", async ({
 test("lab checks provenance, teaches the companion, and exposes decision history", async ({
   page,
 }) => {
-  await page.goto("/#lab");
+  await page.goto("/lab");
   await page.getByRole("button", { name: /Start source check/ }).click();
   await page.getByRole("button", { name: /retrieval.py f9e8d7c/ }).click();
   await expect(page.getByRole("status")).toContainText("wrong revision");
@@ -117,7 +117,7 @@ test("lab checks provenance, teaches the companion, and exposes decision history
 test("companion grows from exploration without counting the same project twice", async ({
   page,
 }) => {
-  await page.goto("/#about");
+  await page.goto("/about");
   const current = page.locator('.growth-stop[aria-current="step"]');
   await expect(current).toContainText("The seed");
   for (const id of ["recollia", "recollia"]) {
@@ -182,7 +182,7 @@ for (const width of [320, 390, 768, 1024, 1440]) {
       ),
     ).toBe(true);
     for (const route of ["work/recollia", "project/galilearn"]) {
-      await page.goto(`/#${route}`);
+      await page.goto(`/${route}`);
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       expect(
         await page.evaluate(
@@ -190,7 +190,7 @@ for (const width of [320, 390, 768, 1024, 1440]) {
         ),
       ).toBe(true);
     }
-    await page.goto("/#lab");
+    await page.goto("/lab");
     await page
       .getByRole("button", { name: "Hand controls", exact: true })
       .click();
@@ -217,7 +217,7 @@ test("camera assets are lazy, a declined permission is recoverable", async ({
       throw new DOMException("Declined in test", "NotAllowedError");
     };
   });
-  await page.goto("/#lab");
+  await page.goto("/lab");
   await page
     .getByRole("button", { name: "Hand controls", exact: true })
     .click();
@@ -251,7 +251,7 @@ test("real hand model initializes on synthetic camera and tracks stop on close",
       return stream;
     };
   });
-  await page.goto("/#lab");
+  await page.goto("/lab");
   await page
     .getByRole("button", { name: "Hand controls", exact: true })
     .click();
@@ -310,7 +310,7 @@ test("a camera permission that resolves after cancellation cannot keep tracks al
         };
       });
   });
-  await page.goto("/#lab");
+  await page.goto("/lab");
   await page
     .getByRole("button", { name: "Hand controls", exact: true })
     .click();

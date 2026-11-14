@@ -8,17 +8,20 @@ export type Route =
   | { name: "about" | "contact" | "not-found" };
 
 export function homeHref(page = 0) {
-  return page > 0 ? `#home?page=${page + 1}` : "#home";
+  return page > 0 ? `/?page=${page + 1}` : "/";
 }
 export function projectHref(id: string, gallery?: { page: number }) {
-  return `#project/${encodeURIComponent(id)}${gallery ? `?from=gallery&page=${gallery.page + 1}` : ""}`;
+  return `/project/${encodeURIComponent(id)}${gallery ? `?from=gallery&page=${gallery.page + 1}` : ""}`;
 }
 export function labHref(id: string, gallery?: { page: number }) {
-  return `#lab?from=${encodeURIComponent(id)}${gallery ? `&gallery=1&page=${gallery.page + 1}` : ""}`;
+  return `/lab?from=${encodeURIComponent(id)}${gallery ? `&gallery=1&page=${gallery.page + 1}` : ""}`;
 }
 
 export function parseRoute(hash: string): Route {
-  const [path, query] = hash.replace(/^#/, "").split("?");
+  const [path, query] = hash
+    .replace(/^(#|\/)/, "")
+    .replace(/\/(?=\?|$)/, "")
+    .split("?");
   const [name, rawId, ...extra] = path.split("/");
   if (extra.length) return { name: "not-found" };
   let id: string | undefined;
@@ -61,4 +64,23 @@ export function routeKey(route: Route) {
   if (route.name === "lab")
     return `lab:${route.fromProject || ""}:${route.fromGallery ? route.page : "work"}`;
   return route.name;
+}
+
+export function routeHref(route: Route) {
+  if (route.name === "home")
+    return `${homeHref(route.page)}${route.intro ? `${route.page ? "&" : "?"}intro=1` : ""}`;
+  if (route.name === "work") return `/work/${route.project.id}`;
+  if (route.name === "project")
+    return projectHref(
+      route.project.id,
+      route.fromGallery ? { page: route.page } : undefined,
+    );
+  if (route.name === "lab")
+    return route.fromProject
+      ? labHref(
+          route.fromProject,
+          route.fromGallery ? { page: route.page } : undefined,
+        )
+      : "/lab";
+  return route.name === "not-found" ? "/404" : `/${route.name}`;
 }

@@ -1,4 +1,10 @@
-import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
+import {
+  lazy,
+  Suspense,
+  useEffect,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react";
 import { projects } from "./data";
 import { projectHref } from "./routes";
 import { FocusPage, usePortfolioNavigation } from "./usePortfolioNavigation";
@@ -15,23 +21,33 @@ const Lab = lazy(() =>
   import("./Lab").then((module) => ({ default: module.Lab })),
 );
 
+let fallbackNight = false;
 function getNight() {
   try {
     return localStorage.getItem("khushi-theme") === "night";
   } catch {
-    return false;
+    return fallbackNight;
   }
 }
 
-export default function App() {
-  const [night, setNight] = useState(getNight);
-  const navigation = usePortfolioNavigation();
+function subscribeTheme(callback: () => void) {
+  window.addEventListener("storage", callback);
+  window.addEventListener("portfolio-theme", callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener("portfolio-theme", callback);
+  };
+}
+
+export default function App({ initialUrl }: { initialUrl?: string }) {
+  const night = useSyncExternalStore(subscribeTheme, getNight, () => false);
+  const navigation = usePortfolioNavigation(initialUrl);
   const { route, hash, visited: learned } = navigation;
   const currentProject =
     ("project" in route ? route.project : undefined) ??
     projects.find((item) => item.id === navigation.notebookId) ??
     projects[0];
-  const workHref = `#work/${currentProject.id}`;
+  const workHref = `/work/${currentProject.id}`;
   const labCaseHref =
     route.name === "lab" && route.fromProject
       ? projectHref(
@@ -41,11 +57,6 @@ export default function App() {
       : undefined;
   useEffect(() => {
     document.documentElement.dataset.theme = night ? "night" : "day";
-    try {
-      localStorage.setItem("khushi-theme", night ? "night" : "day");
-    } catch {
-      /* Theme storage is optional. */
-    }
   }, [night]);
   let content: ReactNode;
   if (route.name === "lab")
@@ -95,7 +106,7 @@ export default function App() {
             <p className="eyebrow">404</p>
             <h1 tabIndex={-1}>Page not found.</h1>
             <p>That page isn’t in this notebook.</p>
-            <a className="button primary" href="#work/recollia">
+            <a className="button primary" href="/work/recollia">
               Open the notebook <Icon name="arrow" size={16} />
             </a>
           </section>
@@ -115,7 +126,7 @@ export default function App() {
         Skip to content
       </a>
       <header className="site-header page-width">
-        <a className="wordmark" href="#home">
+        <a className="wordmark" href="/">
           khushi{" "}
           <span className="notebook-star" aria-hidden="true">
             ✳
@@ -134,19 +145,19 @@ export default function App() {
             Work
           </a>
           <a
-            href="#lab"
+            href="/lab"
             aria-current={route.name === "lab" ? "page" : undefined}
           >
             Lab
           </a>
           <a
-            href="#about"
+            href="/about"
             aria-current={route.name === "about" ? "page" : undefined}
           >
             About
           </a>
           <a
-            href="#contact"
+            href="/contact"
             aria-current={route.name === "contact" ? "page" : undefined}
           >
             Contact
@@ -156,7 +167,15 @@ export default function App() {
           className="theme-toggle"
           aria-label={night ? "Switch to day mode" : "Switch to night mode"}
           aria-pressed={night}
-          onClick={() => setNight((value) => !value)}
+          onClick={() => {
+            fallbackNight = !night;
+            try {
+              localStorage.setItem("khushi-theme", !night ? "night" : "day");
+            } catch {
+              /* Theme storage is optional. */
+            }
+            window.dispatchEvent(new Event("portfolio-theme"));
+          }}
         >
           <Icon name="sun" size={16} />
           <Icon name="moon" size={16} />
@@ -195,7 +214,7 @@ export default function App() {
         >
           GitHub <Icon name="diagonal" size={13} />
         </a>
-        <a href="#contact">
+        <a href="/contact">
           Get in touch <Icon name="diagonal" size={13} />
         </a>
       </footer>

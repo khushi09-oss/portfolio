@@ -43,7 +43,7 @@ export class LoadBoundary extends Component<
             Continue without gestures
           </button>
         ) : (
-          <a className="inline-link" href="#work/recollia">
+          <a className="inline-link" href="/work/recollia">
             Explore my work
           </a>
         )}

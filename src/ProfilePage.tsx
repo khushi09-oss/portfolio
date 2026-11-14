@@ -54,7 +54,7 @@ export function ProfilePage({
             I built an AI tutor for medical exam prep.
           </p>
           <p>I also teach Python to school kids.</p>
-          <a className="inline-link" href="#work/recollia">
+          <a className="inline-link" href="/work/recollia">
             Explore my work <Icon name="arrow" size={18} />
           </a>
         </div>

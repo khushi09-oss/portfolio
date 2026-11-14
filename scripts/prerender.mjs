@@ -1,0 +1,87 @@
+import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { PassThrough } from "node:stream";
+import { createElement } from "react";
+import { renderToPipeableStream } from "react-dom/server";
+import { createServer } from "vite";
+
+const origin = new URL(
+  process.env.SITE_URL ||
+    "https://khushi-sahni-workbench.khushipranav2603.chatgpt.site",
+).origin;
+const template = await readFile(
+  new URL("../dist/index.html", import.meta.url),
+  "utf8",
+);
+const escape = (value) =>
+  value.replace(
+    /[&<>"']/g,
+    (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        c
+      ],
+  );
+const vite = await createServer({
+  server: { middlewareMode: true },
+  appType: "custom",
+});
+try {
+  const { default: App } = await vite.ssrLoadModule("/src/App.tsx");
+  const { projects } = await vite.ssrLoadModule("/src/data.ts");
+  const { pageMetadata } = await vite.ssrLoadModule("/src/page-metadata.ts");
+  const paths = [
+    "/",
+    "/about",
+    "/contact",
+    "/lab",
+    "/404",
+    ...projects.flatMap((p) => [`/work/${p.id}`, `/project/${p.id}`]),
+  ];
+  for (const path of paths) {
+    const body = await new Promise((resolve, reject) => {
+      const output = new PassThrough();
+      let markup = "";
+      output.on("data", (chunk) => {
+        markup += chunk.toString();
+      });
+      output.on("end", () => resolve(markup));
+      output.on("error", reject);
+      const stream = renderToPipeableStream(
+        createElement(App, { initialUrl: path }),
+        {
+          onAllReady() {
+            stream.pipe(output);
+          },
+          onError: reject,
+        },
+      );
+    });
+    const meta = pageMetadata(path);
+    const url = new URL(meta.path, origin).href;
+    const tags = `<link rel="canonical" href="${escape(url)}" />\n<meta property="og:type" content="website" />\n<meta property="og:title" content="${escape(meta.title)}" />\n<meta property="og:description" content="${escape(meta.description)}" />\n<meta property="og:url" content="${escape(url)}" />\n<meta property="og:image" content="${new URL(meta.image, origin).href}" />\n<meta name="twitter:card" content="summary_large_image" />`;
+    const html = template
+      .replace(/<title>.*?<\/title>/s, `<title>${escape(meta.title)}</title>`)
+      .replace(
+        /<meta\s+name="description"\s+content="[^"]*"\s*\/>/,
+        `<meta name="description" content="${escape(meta.description)}" />`,
+      )
+      .replace(
+        "</head>",
+        `${tags}${meta.noindex ? '\n<meta name="robots" content="noindex" />' : ""}\n</head>`,
+      )
+      .replace(
+        '<div id="root"></div>',
+        `<div id="root" data-prerendered="true" data-page="${path}">${body}</div>`,
+      );
+    const directory = new URL(
+      `../dist${path === "/" ? "/" : path + "/"}`,
+      import.meta.url,
+    );
+    await mkdir(directory, { recursive: true });
+    await writeFile(new URL("index.html", directory), html);
+    if (path !== "/")
+      await writeFile(new URL(`../dist${path}.html`, import.meta.url), html);
+  }
+  console.log(`Generated ${paths.length} static pages with project metadata.`);
+} finally {
+  await vite.close();
+}

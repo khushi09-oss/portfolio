@@ -14,9 +14,9 @@ export function Lab({
   night,
   discoveries,
   onLearn,
-  backHref = "#work/github-mcp",
+  backHref = "/work/github-mcp",
   backLabel = "Back to portfolio",
-  caseHref = "#project/github-mcp",
+  caseHref = "/project/github-mcp",
 }: {
   night: boolean;
   discoveries: string[];

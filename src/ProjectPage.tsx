@@ -27,7 +27,7 @@ export function ProjectPage({
     <article className="project-page page-width">
       <a
         className="back-link"
-        href={fromGallery ? homeHref(galleryPage) : `#work/${project.id}`}
+        href={fromGallery ? homeHref(galleryPage) : `/work/${project.id}`}
         data-return
       >
         ← {fromGallery ? "Back to gallery" : "Back to notebook"}

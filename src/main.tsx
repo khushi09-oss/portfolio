@@ -8,8 +8,17 @@ import "./styles.css";
 import "./worlds.css";
 import App from "./App";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const root = document.getElementById("root")!;
+const app = (
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
+  </React.StrictMode>
 );
+// Legacy fragments and return queries can select content different from the static page.
+if (
+  root.dataset.page === (location.pathname.replace(/\/$/, "") || "/") &&
+  !location.hash &&
+  !location.search
+)
+  ReactDOM.hydrateRoot(root, app);
+else ReactDOM.createRoot(root).render(app);

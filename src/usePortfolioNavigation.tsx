@@ -6,7 +6,14 @@ import {
   type MouseEvent,
   type ReactNode,
 } from "react";
-import { homeHref, parseRoute, routeKey } from "./routes";
+import { homeHref, parseRoute, routeHref, routeKey } from "./routes";
+import { pageMetadata } from "./page-metadata";
+
+function locationHref() {
+  return location.hash
+    ? routeHref(parseRoute(location.hash))
+    : location.pathname + location.search;
+}
 
 type Position = { key: string; y: number; focus?: string };
 function returnPositions(state: unknown) {
@@ -48,14 +55,17 @@ function savedPosition(state: unknown, key: string): Position | undefined {
   };
 }
 
-export function usePortfolioNavigation() {
+export function usePortfolioNavigation(initialUrl?: string) {
   const [state, setState] = useState(() => {
-    const hash = location.hash,
+    const hash = initialUrl ?? locationHref(),
       route = parseRoute(hash);
     const project = "project" in route ? route.project : undefined;
     return {
       hash,
-      position: savedPosition(history.state, routeKey(route)),
+      position: savedPosition(
+        typeof history === "undefined" ? undefined : history.state,
+        routeKey(route),
+      ),
       selectionOnly: false,
       notebookId: project?.id || "recollia",
       visited: new Set<string>(
@@ -63,14 +73,17 @@ export function usePortfolioNavigation() {
       ),
     };
   });
-  const positions = useRef(returnPositions(history.state));
+  const positions = useRef(
+    returnPositions(typeof history === "undefined" ? undefined : history.state),
+  );
   const returning = useRef(false);
   const route = parseRoute(state.hash);
   useEffect(() => {
     const oldRestoration = history.scrollRestoration;
     history.scrollRestoration = "manual";
+    if (location.hash) history.replaceState(history.state, "", locationHref());
     function navigate() {
-      const hash = location.hash,
+      const hash = locationHref(),
         next = parseRoute(hash),
         key = routeKey(next);
       const position = returning.current
@@ -83,6 +96,7 @@ export function usePortfolioNavigation() {
           ...(position ? { portfolioPosition: position } : {}),
         },
         "",
+        hash,
       );
       returning.current = false;
       setState((previous) => {
@@ -103,9 +117,11 @@ export function usePortfolioNavigation() {
       });
     }
     window.addEventListener("hashchange", navigate);
+    window.addEventListener("popstate", navigate);
     return () => {
       history.scrollRestoration = oldRestoration;
       window.removeEventListener("hashchange", navigate);
+      window.removeEventListener("popstate", navigate);
     };
   }, []);
   function remember(focus?: string) {
@@ -133,7 +149,14 @@ export function usePortfolioNavigation() {
       "a[href]",
     );
     const href = anchor?.getAttribute("href");
-    if (!href?.startsWith("#") || anchor?.target === "_blank") return;
+    if (
+      !href ||
+      href === "#main" ||
+      anchor?.target === "_blank" ||
+      (!href.startsWith("#") && !href.startsWith("/")) ||
+      new URL(href, location.href).origin !== location.origin
+    )
+      return;
     if (routeKey(parseRoute(href)) === routeKey(route)) {
       event.preventDefault();
       returning.current = false;
@@ -148,10 +171,22 @@ export function usePortfolioNavigation() {
     }
     remember(href);
     returning.current = anchor?.hasAttribute("data-return") || false;
+    event.preventDefault();
+    history.pushState(
+      { portfolioReturns: [...positions.current.values()].slice(-50) },
+      "",
+      routeHref(parseRoute(href)),
+    );
+    window.dispatchEvent(new PopStateEvent("popstate"));
   }
   function selectGalleryPage(page: number) {
     remember();
-    location.hash = homeHref(page);
+    history.pushState(
+      { portfolioReturns: [...positions.current.values()].slice(-50) },
+      "",
+      homeHref(page),
+    );
+    window.dispatchEvent(new PopStateEvent("popstate"));
   }
   function discover(id: string) {
     setState((previous) => ({
@@ -177,7 +212,30 @@ export function FocusPage({
 }) {
   useLayoutEffect(() => {
     const heading = document.querySelector<HTMLElement>("main h1");
-    document.title = `${heading?.innerText.replace(/\s+/g, " ") || "Notebook"} | Khushi Sahni`;
+    const metadata = pageMetadata(hash);
+    document.title = metadata.title;
+    const updateMeta = (selector: string, value: string) =>
+      document
+        .querySelector<HTMLMetaElement>(selector)
+        ?.setAttribute("content", value);
+    updateMeta('meta[name="description"]', metadata.description);
+    updateMeta('meta[property="og:title"]', metadata.title);
+    updateMeta('meta[property="og:description"]', metadata.description);
+    const canonical = new URL(metadata.path, location.origin).href;
+    document
+      .querySelector('link[rel="canonical"]')
+      ?.setAttribute("href", canonical);
+    updateMeta('meta[property="og:url"]', canonical);
+    let robots = document.querySelector<HTMLMetaElement>('meta[name="robots"]');
+    if (metadata.noindex && !robots) {
+      robots = document.createElement("meta");
+      robots.name = "robots";
+      document.head.append(robots);
+    }
+    robots?.setAttribute(
+      "content",
+      metadata.noindex ? "noindex" : "index,follow",
+    );
     if (position) {
       const target = [
         ...document.querySelectorAll<HTMLAnchorElement>("main a[href]"),

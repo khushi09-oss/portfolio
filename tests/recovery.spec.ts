@@ -4,7 +4,7 @@ test("the source-check task has a clear first-screen entry on a phone", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/#lab");
+  await page.goto("/lab");
   const start = page.getByRole("button", {
     name: "Start source check",
     exact: true,
@@ -23,6 +23,7 @@ test("a failed lab download keeps navigation and contact usable", async ({
     (route) => route.abort(),
   );
   await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
   await page.getByRole("link", { name: "Lab", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "The lab couldn't open." }),
@@ -41,7 +42,7 @@ test("a failed hand panel download leaves the source check available", async ({
     /(?:\/assets\/HandControls-[^/]+\.js|\/src\/HandControls\.tsx)(?:\?.*)?$/,
     (route) => route.abort(),
   );
-  await page.goto("/#lab");
+  await page.goto("/lab");
   await page
     .getByRole("button", { name: "Hand controls", exact: true })
     .click();
@@ -61,7 +62,8 @@ test("a reloaded project returns to its gallery position and invoking link", asy
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/#home");
+  await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
   await page.evaluate(() => scrollTo({ top: 600, behavior: "instant" }));
   const card = page.locator(".gallery-card").filter({ hasText: "Tiny Town" });
   await card.focus();

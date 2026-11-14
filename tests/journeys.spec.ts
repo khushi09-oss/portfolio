@@ -5,12 +5,13 @@ test("a gallery visitor returns to the same scene and focused project", async ({
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
   await page.evaluate(() => scrollTo(0, 650));
   const card = page
     .getByRole("region", { name: "Project gallery" })
     .getByRole("link", { name: "Tiny Town", exact: true });
   await card.click();
-  await expect(page).toHaveURL(/#project\/tiny-town\?from=gallery/);
+  await expect(page).toHaveURL(/project\/tiny-town\?from=gallery/);
   await page.goBack();
   await expect(card).toBeFocused();
   await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(300);
@@ -25,13 +26,13 @@ test("a gallery visitor returns to the same scene and focused project", async ({
 test("a project connects its explanation, interactive example and next project", async ({
   page,
 }) => {
-  await page.goto("/#work/github-mcp");
+  await page.goto("/work/github-mcp");
   await expect(page.locator(".notebook-left")).toContainText("My contribution");
   await page.getByRole("link", { name: "Open the full project" }).click();
   await page
     .getByRole("link", { name: "Try a source check", exact: true })
     .click();
-  await expect(page).toHaveURL(/#lab\?from=github-mcp$/);
+  await expect(page).toHaveURL(/lab\?from=github-mcp$/);
   await page.getByRole("link", { name: "Back to GitHub MCP" }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "GitHub MCP",
@@ -50,6 +51,7 @@ test("the first action opens the work and notebook selection focuses the new spr
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
   await page
     .getByRole("link", { name: "Explore my work", exact: true })
     .click();
@@ -67,7 +69,8 @@ test("the lab keeps a gallery-origin project on the same return path", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto("/#home");
+  await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
   await page.evaluate(() => scrollTo(0, 650));
   const card = page
     .getByRole("region", { name: "Project gallery" })
@@ -76,7 +79,7 @@ test("the lab keeps a gallery-origin project on the same return path", async ({
   await page
     .getByRole("link", { name: "Try a source check", exact: true })
     .click();
-  await expect(page).toHaveURL(/#lab\?from=github-mcp&gallery=1&page=1$/);
+  await expect(page).toHaveURL(/lab\?from=github-mcp&gallery=1&page=1$/);
   await page.getByRole("link", { name: "Back to GitHub MCP" }).click();
   await page.getByRole("link", { name: "Back to gallery" }).click();
   await expect(card).toBeFocused();

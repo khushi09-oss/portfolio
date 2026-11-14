@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f5f2eb"/>
+  <path d="M64 98h1072M64 550h1072" stroke="#cec8bd"/>
+  <g fill="#292b2a" font-family="Arial, sans-serif">
+    <text x="64" y="72" font-size="34" font-weight="700">khushi</text>
+    <text x="64" y="235" font-size="64" font-weight="600">Models. Systems.</text>
+    <text x="64" y="310" font-size="64" font-weight="600">Interfaces.</text>
+    <text x="64" y="385" font-size="25" fill="#65615b">ML engineering, from the idea to the product.</text>
+    <text x="64" y="510" font-size="22" fill="#93485d">Khushi Sahni / Selected work</text>
+  </g>
+  <g stroke="#292b2a" stroke-width="2.5" fill="#eae6dd">
+    <path d="m879 172 206-18 23 259-206 18z" fill="#cec8bd" stroke="none"/>
+    <path d="m840 164 204-20 24 255-204 20z"/>
+    <path d="m894 185 201 17-22 256-201-17z" fill="#f5f2eb"/>
+    <path d="m1064 199-3 32 31 2"/>
+    <path d="m914 254 140 12m-143 18 116 10m-118 18 136 12m-139 18 105 9" fill="none"/>
+    <path d="m907 304 148 13" stroke="#e9d8d9" stroke-width="23"/>
+    <path d="m909 304 126 11" fill="none"/>
+    <path d="M863 454h239v17H863z" fill="#e9d8d9"/>
+  </g>
+</svg>

@@ -10,6 +10,7 @@ test("every project name stays uncovered throughout the ring transition", async 
   ]) {
     await page.setViewportSize(viewport);
     await page.goto("/");
+    await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
     await page.evaluate(() => document.fonts.ready);
     for (const y of [0, 250, 450, 600]) {
       await page.evaluate((y) => scrollTo({ top: y, behavior: "instant" }), y);
@@ -52,6 +53,7 @@ test("gallery gathers and rotates on scroll while project links stay usable", as
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
   const gallery = page.getByRole("region", { name: "Project gallery" });
   await expect(gallery.getByRole("link")).toHaveCount(6);
   await expect(gallery.locator(".gallery-orbit")).toHaveText("");
@@ -78,7 +80,7 @@ test("gallery gathers and rotates on scroll while project links stay usable", as
     .not.toBe(before);
   await first.focus();
   await page.keyboard.press("Enter");
-  await expect(page).toHaveURL(/#project\/recollia\?from=gallery/);
+  await expect(page).toHaveURL(/project\/recollia\?from=gallery/);
 });
 
 test("reduced motion keeps a static gallery and dark surfaces use charcoal", async ({
@@ -86,6 +88,7 @@ test("reduced motion keeps a static gallery and dark surfaces use charcoal", asy
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
   const gallery = page.getByRole("region", { name: "Project gallery" });
   const first = gallery.getByRole("link").first();
   const before = await first.evaluate(
@@ -113,6 +116,7 @@ test("touch-sized gallery fits a phone and does not require hover", async ({
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
   const gallery = page.getByRole("region", { name: "Project gallery" });
   expect(
     await page.evaluate(

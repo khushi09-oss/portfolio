@@ -71,7 +71,7 @@ export function Introduction({
             across models, backend systems, and interfaces to turn ideas into
             useful software.
           </p>
-          <a className="button primary welcome-work-link" href="#work/recollia">
+          <a className="button primary welcome-work-link" href="/work/recollia">
             Explore my work <Icon name="diagonal" size={14} />
           </a>
           <button
@@ -145,7 +145,7 @@ export function Introduction({
               ))}
             </span>
             {step === 2 ? (
-              <a className="button primary" href="#work/recollia">
+              <a className="button primary" href="/work/recollia">
                 Open my notebook <Icon name="arrow" size={16} />
               </a>
             ) : (
@@ -194,7 +194,7 @@ export function Notebook({
         {projects.map((item) => (
           <a
             key={item.id}
-            href={`#work/${item.id}`}
+            href={`/work/${item.id}`}
             aria-current={item.id === project.id ? "page" : undefined}
           >
             {item.name}
@@ -216,7 +216,7 @@ export function Notebook({
           <p>{project.contribution}</p>
           <a
             className="button primary notebook-read-link"
-            href={`#project/${project.id}`}
+            href={`/project/${project.id}`}
           >
             Open the full project <Icon name="diagonal" size={16} />
           </a>
@@ -235,7 +235,7 @@ export function Notebook({
       <div className="notebook-dock">
         <NotebookGuide />
         <p>Choose a project tab. Open the full project for a closer look.</p>
-        <a className="inline-link" href="#home?intro=1">
+        <a className="inline-link" href="/?intro=1">
           Replay introduction <Icon name="diagonal" size={13} />
         </a>
       </div>
