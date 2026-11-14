@@ -140,6 +140,19 @@ const labels: Record<string, string> = {
   reforge: "Drift detection, model evaluation, and deployment",
 };
 
+const defaultIllustration = (
+  <svg
+    className="project-default-illustration"
+    viewBox="0 0 360 220"
+    aria-hidden="true"
+  >
+    <path className="cut-shadow" d="M78 64h220v124H78z" />
+    <path className="cut-sheet" d="M61 48h90l19 20h112v107H61z" />
+    <path className="cut-highlight" d="M78 88h187v25H78z" />
+    <path className="cut-rule" d="M94 100h103m-103 32h148m-148 17h104" />
+  </svg>
+);
+
 export function ProjectArtwork({
   project,
   night,
@@ -149,10 +162,11 @@ export function ProjectArtwork({
 }) {
   if (project.preview)
     return <ProjectPreview project={project} night={night} />;
+  const label = labels[project.id] ?? project.name;
   return (
-    <figure className="project-illustration" aria-label={labels[project.id]}>
-      {illustrations[project.id]}
-      <figcaption>{labels[project.id]}</figcaption>
+    <figure className="project-illustration" aria-label={label}>
+      {illustrations[project.id] ?? defaultIllustration}
+      <figcaption>{label}</figcaption>
     </figure>
   );
 }

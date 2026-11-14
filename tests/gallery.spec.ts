@@ -8,6 +8,7 @@ test("gallery gathers and rotates on scroll while project links stay usable", as
   await page.goto("/");
   const gallery = page.getByRole("region", { name: "Project gallery" });
   await expect(gallery.getByRole("link")).toHaveCount(6);
+  await expect(gallery.locator(".gallery-orbit")).toHaveText("");
   const first = gallery.getByRole("link").first();
   const paper = first.locator(".gallery-card-paper");
   const beforeHover = await paper.evaluate(

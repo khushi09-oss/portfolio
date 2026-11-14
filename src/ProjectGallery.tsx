@@ -1,8 +1,23 @@
-import { useLayoutEffect, useRef } from "react";
-import { projects } from "./data";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { projects, type Project } from "./data";
 import { ProjectArtwork } from "./ProjectArtwork";
+import { galleryPosition } from "./gallery-layout";
 
-export function ProjectGallery({ night }: { night: boolean }) {
+export function ProjectGallery({
+  night,
+  items = projects,
+}: {
+  night: boolean;
+  items?: readonly Project[];
+}) {
+  const [page, setPage] = useState(0);
+  const pageCount = Math.max(1, Math.ceil(items.length / 6));
+  const currentPage = Math.min(page, pageCount - 1);
+  const visible = useMemo(
+    () => items.slice(currentPage * 6, (currentPage + 1) * 6),
+    [items, currentPage],
+  );
+  const start = currentPage * 6;
   const ref = useRef<HTMLElement>(null);
   useLayoutEffect(() => {
     const track = ref.current!;
@@ -14,7 +29,7 @@ export function ProjectGallery({ night }: { night: boolean }) {
     let frame = 0;
     function paint() {
       frame = 0;
-      const moving = innerWidth > 900 && !reduced.matches;
+      const moving = innerWidth > 900 && !reduced.matches && cards.length > 0;
       track.dataset.motion = String(moving);
       if (!moving) return;
       const bounds = track.getBoundingClientRect();
@@ -28,24 +43,23 @@ export function ProjectGallery({ night }: { night: boolean }) {
             Math.max(1, bounds.height - height),
         ),
       );
-      const blend = Math.min(1, progress / 0.65);
-      const eased = blend * blend * (3 - 2 * blend);
-      const orbit = (Math.max(0, progress - 0.35) / 0.65) * Math.PI * 0.5;
-      const radius = Math.min(width * 0.31, height * 0.32);
       cards.forEach((card, index) => {
-        const angle = (index * Math.PI) / 3 - Math.PI * 0.5 + orbit;
-        const startX = ((index % 3) - 1) * width * 0.29;
-        const startY = (Math.floor(index / 3) - 0.5) * height * 0.38;
-        const x = startX * (1 - eased) + Math.cos(angle) * radius * eased;
-        const y = startY * (1 - eased) + Math.sin(angle) * radius * eased;
-        const tilt =
-          (index % 2 ? 4 : -4) * (1 - eased) + Math.sin(angle) * 16 * eased;
+        const { x, y, tilt } = galleryPosition(
+          index,
+          cards.length,
+          width,
+          height - (pageCount > 1 ? 80 : 0),
+          progress,
+        );
         card.style.setProperty("--card-x", `${x}px`);
         card.style.setProperty("--card-y", `${y}px`);
         card.style.setProperty("--card-tilt", `${tilt}deg`);
       });
       stage.style.setProperty("--orbit-turn", `${progress * 120}deg`);
-      stage.style.setProperty("--orbit-reveal", String(eased));
+      stage.style.setProperty(
+        "--orbit-reveal",
+        String(Math.min(1, progress / 0.65)),
+      );
     }
     function schedule() {
       if (!frame) frame = requestAnimationFrame(paint);
@@ -64,40 +78,41 @@ export function ProjectGallery({ night }: { night: boolean }) {
       window.removeEventListener("resize", schedule);
       reduced.removeEventListener("change", schedule);
     };
-  }, []);
+  }, [visible, pageCount]);
   return (
     <section
       ref={ref}
-      className="project-gallery-track"
+      className={`project-gallery-track${items.length ? "" : " is-empty"}`}
       aria-label="Project gallery"
     >
-      <div className="gallery-stage">
+      <div className={`gallery-stage${pageCount > 1 ? " has-pages" : ""}`}>
         <div className="gallery-caption">
           <span>SELECTED WORK</span>
-          <span>01—06</span>
-        </div>
-        <div className="gallery-orbit" aria-hidden="true">
-          <svg viewBox="0 0 200 200">
-            <circle cx="100" cy="100" r="94" />
-            {Array.from({ length: 6 }, (_, i) => (
-              <ellipse
-                key={i}
-                cx="100"
-                cy="68"
-                rx="24"
-                ry="43"
-                transform={`rotate(${i * 60} 100 100)`}
-              />
-            ))}
-          </svg>
           <span>
-            KHUSHI’S
-            <br />
-            PROJECTS
+            {items.length
+              ? `${String(start + 1).padStart(2, "0")}—${String(start + visible.length).padStart(2, "0")} / ${items.length}`
+              : "0 projects"}
           </span>
         </div>
+        {items.length > 0 && (
+          <div className="gallery-orbit" aria-hidden="true">
+            <svg viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="94" />
+              {Array.from({ length: 6 }, (_, i) => (
+                <ellipse
+                  key={i}
+                  cx="100"
+                  cy="68"
+                  rx="24"
+                  ry="43"
+                  transform={`rotate(${i * 60} 100 100)`}
+                />
+              ))}
+            </svg>
+          </div>
+        )}
         <div className="gallery-cards">
-          {projects.map((project, index) => (
+          {visible.map((project, index) => (
             <a
               className="gallery-card"
               key={project.id}
@@ -109,7 +124,7 @@ export function ProjectGallery({ night }: { night: boolean }) {
                 </div>
                 <div className="gallery-card-label">
                   <span aria-hidden="true">
-                    {String(index + 1).padStart(2, "0")}
+                    {String(start + index + 1).padStart(2, "0")}
                   </span>
                   <strong>{project.name}</strong>
                   <span aria-hidden="true">↗</span>
@@ -118,10 +133,34 @@ export function ProjectGallery({ night }: { night: boolean }) {
             </a>
           ))}
         </div>
-        <p className="gallery-instruction">
-          <span className="gallery-scroll-hint">Scroll to rearrange · </span>
-          Open any project to explore it.
-        </p>
+        {!items.length && (
+          <p className="gallery-empty">Projects will appear here.</p>
+        )}
+        {pageCount > 1 && (
+          <nav className="gallery-pagination" aria-label="Gallery pages">
+            <button
+              onClick={() => setPage(currentPage - 1)}
+              disabled={currentPage === 0}
+            >
+              ← Previous projects
+            </button>
+            <span role="status" aria-live="polite">
+              {currentPage + 1} / {pageCount}
+            </span>
+            <button
+              onClick={() => setPage(currentPage + 1)}
+              disabled={currentPage === pageCount - 1}
+            >
+              Next projects →
+            </button>
+          </nav>
+        )}
+        {items.length > 0 && (
+          <p className="gallery-instruction">
+            <span className="gallery-scroll-hint">Scroll to rearrange · </span>
+            Open any project to explore it.
+          </p>
+        )}
       </div>
     </section>
   );
