@@ -94,7 +94,7 @@ test("lab checks provenance, teaches the companion, and exposes decision history
     page.getByRole("figure", { name: "Co-op evidence bridge" }),
   ).toHaveAttribute("data-tiles", "3");
   await expect(
-    page.getByText("Source finding, learned. We make a good team."),
+    page.getByText("Source and claim checked. You can explore GitHub MCP next."),
   ).toBeVisible();
   await expect(
     page.getByText("Evidence checking", { exact: true }),
@@ -145,7 +145,7 @@ test("theme persists and both routes pass automated accessibility checks", async
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await page.getByRole("link", { name: "Lab", exact: false }).first().click();
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Follow the evidence",
+    "Try a source check",
   );
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 });

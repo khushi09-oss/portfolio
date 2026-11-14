@@ -46,7 +46,7 @@ export function Lab({
   function chooseClaim(claim: string) {
     if (!claimIsSupported(sourceVerified, claim)) {
       setFeedback(
-        "That claim is not supported by the fixture. Check what the function combines.",
+        "That claim is not supported by this code. Check what the function combines.",
       );
       return;
     }
@@ -62,11 +62,13 @@ export function Lab({
       </a>
       <div className="lab-heading">
         <div>
-          <p className="eyebrow">A SMALL EXPERIMENT IN UNDERSTANDING</p>
+          <p className="eyebrow">INTERACTIVE EXAMPLE</p>
           <h1 tabIndex={-1}>
-            Follow the <em>evidence.</em>
+            Try a source check
           </h1>
-          <p className="lead">Pull an idea apart. See what makes it work.</p>
+          <p className="lead">
+            Match a source to an answer, then check what it supports.
+          </p>
           <button
             className="inline-link lab-world-link"
             onClick={() =>
@@ -124,11 +126,11 @@ export function Lab({
           id="bridge-world"
           aria-labelledby="challenge-title"
         >
-          <p className="eyebrow">YOU + YOUR LAB PARTNER</p>
-          <h2 id="challenge-title">Two minds. One source.</h2>
+          <p className="eyebrow">SOURCE CHECK</p>
+          <h2 id="challenge-title">Find the source, then check the claim.</h2>
           <p>
-            I’ll hold the answer. You connect its evidence. Can you spot the
-            source that actually belongs?
+            Choose the file and version used for the answer. Then select the
+            statement that the code supports.
           </p>
           <CoopWorld
             night={night}
@@ -150,12 +152,12 @@ export function Lab({
             <>
               <div className="bridge-task">
                 <div className="task-brief">
-                  <span className="eyebrow">ILLUSTRATIVE ANSWER</span>
+                  <span className="eyebrow">EXAMPLE ANSWER</span>
                   <p>“The retriever combines two ranked result lists.”</p>
                   <code>retrieved: retrieval.py @ a1b2c3d</code>
                   <code>combine_ranks(bm25_results, dense_results)</code>
                   <span className="fixture-label">
-                    Illustrative source, not project code.
+                    Sample code for this exercise.
                   </span>
                 </div>
                 <div className="source-options">
@@ -179,7 +181,7 @@ export function Lab({
               {sourceVerified && (
                 <div className="claim-task">
                   <p className="eyebrow">
-                    THE FINAL TILE / WHAT DOES THE SOURCE SUPPORT?
+                    WHAT DOES THE SOURCE SUPPORT?
                   </p>
                   <div className="claim-options">
                     {claims.map((claim) => (
@@ -220,7 +222,7 @@ export function Lab({
           )}
         </section>
         <section className="iteration-panel" aria-labelledby="iteration-title">
-          <p className="eyebrow">AN IDEA, UNDER THE MICROSCOPE</p>
+          <p className="eyebrow">HOW I HANDLED THIS IN GITHUB MCP</p>
           <div
             className="iteration-tabs"
             role="group"
@@ -251,7 +253,7 @@ export function Lab({
             target="_blank"
             rel="noreferrer"
           >
-            Explore the actual project <Icon name="diagonal" size={17} />
+            View GitHub MCP <Icon name="diagonal" size={17} />
           </a>
         </section>
       </div>
@@ -259,7 +261,7 @@ export function Lab({
         learned={discoveries.length}
         discoveries={discoveries}
         message={
-          complete ? "Source finding, learned. We make a good team." : undefined
+          complete ? "Source and claim checked. You can explore GitHub MCP next." : undefined
         }
       />
     </main>

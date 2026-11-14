@@ -73,16 +73,16 @@ export function Companion({
           <span className="eyebrow">
             YOUR LAB PARTNER
             {learned >= 3
-              ? " / MAKING CONNECTIONS"
+              ? " / EXPLORING PROJECTS"
               : learned
-                ? " / GETTING CURIOUS"
+                ? " / EXPLORING"
                 : ""}
           </span>
           <p aria-live="polite">
             {message ??
               (learned
-                ? `We've made ${learned} ${learned === 1 ? "discovery" : "discoveries"}. What’s next?`
-                : "A little curious? So am I.")}
+                ? `${learned} ${learned === 1 ? "discovery" : "discoveries"} this visit. Open another project to continue.`
+                : "Open a project to start exploring.")}
           </p>
           {discoveries.length > 0 && (
             <div
@@ -114,7 +114,7 @@ export function Companion({
                 <strong>{name}</strong>
                 <span>
                   {index === 0
-                    ? "Start curious"
+                    ? "Start here"
                     : index === 1
                       ? "Explore a project"
                       : "Make 3 discoveries"}
@@ -124,7 +124,7 @@ export function Companion({
                 {phase === index
                   ? "You are here"
                   : phase > index
-                    ? "Discovered"
+                    ? "Unlocked"
                     : "Next"}
               </span>
             </div>
@@ -132,8 +132,7 @@ export function Companion({
         )}
       </div>
       <p className="growth-note">
-        Explore projects to help your companion grow. Progress belongs to this
-        visit.
+        Open projects to unlock the next stage. Progress resets when you reload.
       </p>
     </section>
   );
