@@ -1,5 +1,20 @@
 import { test, expect } from "@playwright/test";
 
+test("the source-check task has a clear first-screen entry on a phone", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/#lab");
+  const start = page.getByRole("button", {
+    name: "Start source check",
+    exact: true,
+  });
+  await expect(start).toBeInViewport();
+  await start.click();
+  await expect(page.locator(".source-options")).toBeInViewport();
+  await expect(page.locator(".source-options button").first()).toBeFocused();
+});
+
 test("a failed lab download keeps navigation and contact usable", async ({
   page,
 }) => {
@@ -34,7 +49,7 @@ test("a failed hand panel download leaves the source check available", async ({
     page.getByRole("heading", { name: "Hand controls couldn't open." }),
   ).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "Try a co-op task" }),
+    page.getByRole("button", { name: "Start source check" }),
   ).toBeVisible();
   await page.getByRole("link", { name: "Contact", exact: true }).click();
   await expect(

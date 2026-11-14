@@ -69,7 +69,7 @@ test("lab checks provenance, teaches the companion, and exposes decision history
   page,
 }) => {
   await page.goto("/#lab");
-  await page.getByRole("button", { name: /Try a co-op task/ }).click();
+  await page.getByRole("button", { name: /Start source check/ }).click();
   await page.getByRole("button", { name: /retrieval.py f9e8d7c/ }).click();
   await expect(page.getByRole("status")).toContainText("wrong revision");
   await page.getByRole("button", { name: /notes.md a1b2c3d/ }).click();

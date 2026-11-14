@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useLayoutEffect, useState } from "react";
 import Machine from "./Machine";
 import { Companion } from "./Companion";
 import { Icon } from "./Icon";
@@ -32,6 +32,12 @@ export function Lab({
   const [complete, setComplete] = useState(false);
   const [sourceVerified, setSourceVerified] = useState(false);
   const [handPanel, setHandPanel] = useState(false);
+  useLayoutEffect(() => {
+    if (!challenge) return;
+    const options = document.querySelector<HTMLElement>(".source-options");
+    options?.querySelector("button")?.focus({ preventScroll: true });
+    options?.scrollIntoView({ block: "center", behavior: "instant" });
+  }, [challenge]);
   function chooseSource(index: number) {
     const source = sources[index];
     if (!source) return;
@@ -75,12 +81,16 @@ export function Lab({
             Match a source to an answer, then check what it supports.
           </p>
           <button
-            className="inline-link lab-world-link"
-            onClick={() =>
-              document.getElementById("bridge-world")?.scrollIntoView()
-            }
+            className="button primary lab-world-link"
+            onClick={() => {
+              setChallenge(true);
+              setStage(1);
+              document
+                .querySelector(".source-options")
+                ?.scrollIntoView({ block: "center", behavior: "instant" });
+            }}
           >
-            Explore the co-op world <span aria-hidden="true">↓</span>
+            Start source check <Icon name="arrow" />
           </button>
         </div>
         <button
@@ -145,17 +155,7 @@ export function Lab({
             complete={complete}
             discoveries={discoveries.length}
           />
-          {!challenge ? (
-            <button
-              className="button primary"
-              onClick={() => {
-                setChallenge(true);
-                setStage(1);
-              }}
-            >
-              Try a co-op task <Icon name="arrow" />
-            </button>
-          ) : (
+          {challenge && (
             <>
               <div className="bridge-task">
                 <div className="task-brief">
