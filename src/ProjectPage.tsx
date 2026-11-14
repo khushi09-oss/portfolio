@@ -47,20 +47,21 @@ export function ProjectPage({
         <div className="project-page-copy">
           <h2>My contribution</h2>
           <p className="contribution-lead">{project.contribution}</p>
-          <h3>How it works</h3>
-          {project.details.map((text) => (
-            <p key={text}>{text}</p>
+          {project.sections.map((section) => (
+            <section className="case-section" key={section.title}>
+              <h2>{section.title}</h2>
+              <p>{section.body}</p>
+            </section>
           ))}
+        </div>
+        <aside className="project-page-art">
+          <ProjectArtwork project={project} night={night} />
+          <h2>Built with</h2>
           <div className="stack" aria-label="Tools used">
             {project.stack.map((tool) => (
               <span key={tool}>{tool}</span>
             ))}
           </div>
-        </div>
-        <aside className="project-page-art">
-          <ProjectArtwork project={project} night={night} />
-          <h2>Design decision</h2>
-          <p>{project.lesson}</p>
         </aside>
       </div>
       <div className="project-page-links">

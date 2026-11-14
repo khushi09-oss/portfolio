@@ -7,7 +7,7 @@ export type Project = {
   contribution: string;
   role: string;
   stack: string[];
-  details: string[];
+  sections: { title: string; body: string }[];
   lesson: string;
   link?: string;
   demo?: string;
@@ -35,11 +35,23 @@ export const projects: Project[] = [
     role: "Machine Learning Engineer · May–October 2026",
     stack: ["Python", "pgvector", "React", "AWS"],
     status: "Employer work",
-    details: [
-      "The tutor answers medical exam-prep questions using licensed material. Its sources need to remain traceable through retrieval and the final answer.",
-      "I built the tutor’s retrieval pipeline using BGE-M3, BM25, and reciprocal rank fusion over a licensed medical corpus in PostgreSQL/pgvector.",
-      "I added voice mode, safety checks, and evaluation tools. I also built study features including timed mock exams, spaced repetition, a Weakness Map, an adaptive planner, and offline packs.",
-      "I handled production releases and hotfixes through GitHub Actions and worked on the move from Supabase to AWS. I also integrated Sarvam speech services and Eka Care tools.",
+    sections: [
+      {
+        title: "A citation needs to support the answer",
+        body: "A relevant passage is only the start. A cited source has to be one the system actually retrieved, and it has to support the claim being made. I treated those as two separate checks in the tutor.",
+      },
+      {
+        title: "Retrieval and source checks",
+        body: "I combined BGE-M3 dense retrieval and BM25 keyword search using reciprocal rank fusion, with the licensed corpus in PostgreSQL/pgvector. One checker rejects sources outside the retrieved set. A second checks whether a source supports the answer’s claim.",
+      },
+      {
+        title: "Beyond the text response",
+        body: "I built the voice path with streaming speech and a multi-model gateway with fallbacks, and integrated Sarvam speech services and Eka Care tools. My work also covered timed exams, spaced reviews, a Weakness Map, adaptive planning and offline packs.",
+      },
+      {
+        title: "Evaluation and releases",
+        body: "I used retrieval and answer evaluation, automated tests, red-team rounds and physician review to work through quality and safety issues. I also handled releases and hotfixes through GitHub Actions and worked on moving production from Supabase to AWS.",
+      },
     ],
     lesson:
       "I added separate checks for whether a cited source was retrieved and whether it supported the answer. Finding a relevant passage wasn’t enough on its own.",
@@ -57,10 +69,19 @@ export const projects: Project[] = [
     stack: ["Python", "MCP", "Source analysis"],
     status: "Open source",
     link: "https://github.com/khushi09-oss/github-mcp",
-    details: [
-      "Repository explanations can drift when the files come from different commits. The server keeps each read tied to one revision.",
-      "I built the repository and file-reading tools in Python, with each read tied to a single commit. It also supports import analysis and architecture diagrams.",
-      "The server runs locally and connects to an MCP-compatible AI client.",
+    sections: [
+      {
+        title: "One explanation, one version of the code",
+        body: "An assistant can read several files while explaining a repository. If those reads come from different commits, the explanation can connect code that never existed together. I resolve the revision first and keep subsequent reads tied to it.",
+      },
+      {
+        title: "Tools for following the code",
+        body: "I built Python tools for browsing repository files, inspecting imports and generating architecture diagrams. The server is read-only and runs locally through an MCP-compatible AI client; the client supplies the assistant, while the server supplies repository context.",
+      },
+      {
+        title: "From a file to a claim",
+        body: "Keeping a file and commit together makes the source easier to check. The source-check exercise on this site lets you try that reasoning: match the retrieved filename and revision, then decide what the code supports.",
+      },
     ],
     lesson:
       "I pin file reads to one commit so the assistant works from a consistent version of the repository, even when an explanation uses several files.",
@@ -78,10 +99,19 @@ export const projects: Project[] = [
     stack: ["S3", "Textract", "DynamoDB"],
     status: "Hackathon project",
     link: "https://github.com/khushi09-oss/kiranaledger",
-    details: [
-      "OCR can return confident prices that do not add up. The ingestion flow checks the extracted rows before the bill moves on.",
-      "I built the ingestion flow: upload a photo directly to S3, extract the bill with Textract, and turn the result into structured rows.",
-      "I added arithmetic checks to catch prices that Textract read incorrectly, including cases where its confidence score was high.",
+    sections: [
+      {
+        title: "The numbers can look right and still be wrong",
+        body: "Textract can be confident about a price that does not add up with the rest of a bill row. That makes the confidence score a poor final check for a shop owner who needs to trust the extracted numbers.",
+      },
+      {
+        title: "My part of the pipeline",
+        body: "I built the ingestion side of the team project: direct photo uploads to S3, extraction with Textract and normalisation into structured rows. This gives the rest of the bill-checking flow usable data rather than an image or raw OCR text.",
+      },
+      {
+        title: "Checking the arithmetic",
+        body: "I added a check against each row’s arithmetic after normalisation. It catches inconsistent prices even when the OCR confidence is high, before the extracted bill moves further through the workflow.",
+      },
     ],
     lesson:
       "I checked each row’s arithmetic because the OCR confidence score didn’t tell us whether the numbers added up.",
@@ -99,10 +129,19 @@ export const projects: Project[] = [
     role: "ML pipeline contribution · team project",
     stack: ["Python", "Temporal", "MinIO"],
     status: "Team project",
-    details: [
-      "The pipeline connects drift detection, retraining, evaluation, and deployment. My part covers the model and data checks within that larger team project.",
-      "I worked on the ML side: preprocessing PaySim data, training an Isolation Forest model, storing models in MinIO, and detecting drift with a KS test.",
-      "I also built a helper that changes the input data on purpose, so we could test whether the drift detector picked it up.",
+    sections: [
+      {
+        title: "Making a change in the data testable",
+        body: "A drift detector needs a way to be checked before a real distribution change arrives. I wanted a known change in the input so we could exercise the detection path on purpose.",
+      },
+      {
+        title: "The ML work I owned",
+        body: "I preprocessed the PaySim fraud dataset, trained an Isolation Forest anomaly model, added model storage in MinIO and built KS-test drift detection. Those components sit inside the team’s larger Temporal pipeline for retraining, evaluation and deployment.",
+      },
+      {
+        title: "Injecting drift",
+        body: "I built a helper that changes the input data so the detector can be tested against a known disturbance. That gives the team a concrete way to try the drift path instead of waiting for live data to change.",
+      },
     ],
     lesson:
       "I used injected drift to test the detection path with a known change in the data, rather than waiting for one to happen.",
@@ -126,10 +165,23 @@ export const projects: Project[] = [
     role: "Personal product · Cosmic Study Buddy",
     stack: ["React", "TypeScript", "Workers", "D1"],
     status: "In development",
-    details: [
-      "Galilearn is the ML study app I’m building. The concept map shows how topics connect and what to learn first.",
-      "I’m building it with React, TypeScript, Cloudflare Workers, and D1. Workers and D1 provide the backend for the learning app.",
-      "Answer keys and grading stay on the server. The browser sends the learner’s answer and displays the result.",
+    sections: [
+      {
+        title: "Seeing what to learn first",
+        body: "ML topics depend on one another, but a list of lessons can hide those connections. I’m using a map of planets to make the concept order visible and connect each topic to its lessons, quizzes and spaced reviews.",
+      },
+      {
+        title: "The interface and the learning backend",
+        body: "I’m building the interface in React and TypeScript, with Cloudflare Workers and D1 behind the learning app. The map is meant to be useful navigation: a way to choose a topic and understand where it fits.",
+      },
+      {
+        title: "Grading stays on the server",
+        body: "The browser sends the learner’s answer and displays the result. Answer keys and grading stay on the server so changing browser state is not enough to award progress.",
+      },
+      {
+        title: "Still in development",
+        body: "The preview comes from my coded design prototype. I’m continuing to build the learning product around the concept map, lessons and review flow.",
+      },
     ],
     lesson:
       "I kept grading on the server so scores come from the answer key, rather than browser state.",
@@ -158,10 +210,19 @@ export const projects: Project[] = [
     status: "Public demo",
     link: "https://github.com/khushi09-oss/jev-town",
     demo: "https://khushi09-oss.github.io/jev-town/",
-    details: [
-      "The residents eat, work, rest, socialise, and wander. Their routines are recorded for the replay.",
-      "I built the simulation in Python and the replay interface with TypeScript and Phaser. You can follow a resident, move through the day, and inspect what happened.",
-      "The public demo replays a saved run using mock decisions.",
+    sections: [
+      {
+        title: "A day in a small town",
+        body: "Thirty residents eat, work, rest, socialise and wander through a pixel village. I wanted someone visiting the demo to be able to follow one resident and inspect a day, rather than just watch the whole town from a distance.",
+      },
+      {
+        title: "Simulation and replay have different jobs",
+        body: "I built the simulation in Python and the replay interface in TypeScript with Phaser. The simulation records what happened; the interface lets you move through that record and follow a resident.",
+      },
+      {
+        title: "A demo you can explore straight away",
+        body: "The public demo replays a saved run with mock decisions. You can explore the same day without starting a model or waiting for a fresh simulation, while the Python simulation remains separate from the browser replay.",
+      },
     ],
     lesson:
       "I separated the simulation from the replay so people can explore the same day without running the simulation again.",

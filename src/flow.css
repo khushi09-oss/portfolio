@@ -72,6 +72,21 @@
 .project-page-art > h2 + p {
   color: var(--muted);
 }
+.case-section {
+  margin-top: 30px;
+}
+.case-section h2 {
+  font-family: inherit;
+  font-size: 21px;
+  font-weight: 550;
+  letter-spacing: -0.025em;
+  margin-bottom: 12px;
+}
+.case-section p {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--muted);
+}
 .next-project {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 150px 25px;
