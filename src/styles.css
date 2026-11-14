@@ -1,18 +1,18 @@
 :root {
   font-family: "DM Sans Variable", sans-serif;
-  color: #292e2d;
-  background: #f6f4ef;
+  color: var(--text);
+  background: var(--paper);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  --paper: #f6f4ef;
-  --surface: #eeede7;
-  --text: #292e2d;
-  --muted: #676b65;
-  --line: #d6d6cc;
-  --rose: #9d5668;
-  --rose-soft: #eadbdb;
-  --button: #29302d;
+  --paper: #f5f2eb;
+  --surface: #eae6dd;
+  --text: #292b2a;
+  --muted: #65615b;
+  --line: #cec8bd;
+  --rose: #93485d;
+  --rose-soft: #e9d8d9;
+  --button: #292b2a;
   --button-text: #faf9f5;
   --serif: "Cormorant Garamond", Georgia, serif;
   scroll-behavior: smooth;
@@ -22,12 +22,12 @@
   color-scheme: dark;
   --paper: #211f23;
   --surface: #2c292f;
-  --text: #ece9df;
+  --text: #f0ece4;
   --muted: #beb5bf;
   --line: #4c454f;
-  --rose: #e1a2b1;
-  --rose-soft: #413139;
-  --button: #e5e6da;
+  --rose: #edb4c4;
+  --rose-soft: #42343b;
+  --button: #f0ece4;
   --button-text: #211f23;
   background: var(--paper);
   color: var(--text);
@@ -218,24 +218,6 @@ svg {
   align-items: center;
   gap: 12px;
 }
-.hero {
-  display: grid;
-  grid-template-columns: 0.95fr 1.35fr;
-  position: relative;
-  padding-top: 86px;
-  column-gap: 12px;
-}
-.hero-copy {
-  position: relative;
-  z-index: 1;
-}
-.hero-copy > .eyebrow {
-  margin-bottom: 23px;
-  letter-spacing: 1.45px;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-}
 .tiny-asterisk {
   font-size: 21px;
   line-height: 1;
@@ -245,17 +227,6 @@ h1 {
   font-size: clamp(62px, 6.7vw, 104px);
   line-height: 0.96;
   letter-spacing: -3.4px;
-}
-.hero-description {
-  font-size: 15px;
-  color: var(--muted);
-  line-height: 1.8;
-  margin-top: 28px;
-}
-.hero-links {
-  display: flex;
-  gap: 12px;
-  margin-top: 30px;
 }
 .button {
   display: inline-flex;
@@ -322,11 +293,6 @@ h1 {
   border-bottom: 1px solid var(--line);
   color: var(--text);
   font-size: 10px;
-}
-.hero-workbench {
-  align-self: center;
-  margin-top: 24px;
-  min-width: 0;
 }
 .machine {
   position: relative;
@@ -442,53 +408,6 @@ h1 {
   font-size: 8px;
   color: var(--muted);
 }
-.hero-lab-link {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 21px;
-  font-size: 10px;
-  color: var(--muted);
-}
-.hero-lab-link > span {
-  font-family: var(--serif);
-  font-size: 16px;
-  font-style: italic;
-}
-.hero-lab-link a {
-  display: flex;
-  gap: 9px;
-  align-items: center;
-  color: var(--text);
-}
-.hero-bottom {
-  grid-column: 1/-1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--line);
-  margin-top: 70px;
-  padding-bottom: 25px;
-  color: var(--muted);
-  font-size: 9px;
-  letter-spacing: 1px;
-}
-.hero-bottom > a {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  font-size: 9px;
-}
-.hero-bottom > a > span {
-  font-size: 20px;
-  color: var(--text);
-}
-.hero-bottom > span:first-child {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 17px;
-  letter-spacing: 0;
-}
 .section-heading {
   display: flex;
   justify-content: space-between;
@@ -515,27 +434,6 @@ h1 {
 }
 .work-section {
   padding-top: 82px;
-}
-.project-row {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 60px 1fr 220px 50px;
-  align-items: center;
-  text-align: left;
-  padding: 30px 12px 30px 0;
-  border-top: 1px solid var(--line);
-  background: transparent;
-  transition:
-    background 0.2s,
-    padding 0.2s;
-  gap: 16px;
-}
-.project-row:last-child {
-  border-bottom: 1px solid var(--line);
-}
-.project-row:hover {
-  background: var(--surface);
-  padding-left: 15px;
 }
 .project-index {
   color: var(--rose);
@@ -577,9 +475,6 @@ h1 {
   display: flex;
   justify-content: end;
 }
-.project-row:hover .project-arrow {
-  color: var(--rose);
-}
 .play-section {
   padding-top: 92px;
 }
@@ -587,16 +482,6 @@ h1 {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
   gap: 28px;
-}
-.experiment-card {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  background: transparent;
-  padding: 0;
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  overflow: hidden;
 }
 .experiment-caption {
   padding: 23px 24px;
@@ -618,9 +503,6 @@ h1 {
   font-size: 11px;
   color: var(--muted);
   margin-top: 4px;
-}
-.experiment-card:hover .experiment-caption > svg {
-  color: var(--rose);
 }
 .about-section {
   padding-block: 110px 85px;
@@ -1104,21 +986,6 @@ h1 {
   border-radius: 2px;
   padding: 5px 8px;
 }
-
-@media (min-width: 1550px) {
-  .hero {
-    padding-top: 100px;
-  }
-  .hero-workbench {
-    margin-right: -20px;
-  }
-  .hero-description {
-    font-size: 17px;
-  }
-  .hero-links {
-    margin-top: 35px;
-  }
-}
 @media (max-width: 1120px) {
   .page-width {
     width: calc(100% - 64px);
@@ -1138,49 +1005,15 @@ h1 {
   .header-actions {
     gap: 16px;
   }
-  .hero {
-    grid-template-columns: 1fr 1.2fr;
-    padding-top: 65px;
-  }
-  .hero h1 {
-    font-size: 78px;
-  }
-  .hero-copy > .eyebrow {
-    font-size: 8px;
-    letter-spacing: 1px;
-  }
-  .hero-links {
-    gap: 5px;
-  }
-  .hero-links .button {
-    font-size: 10px;
-    padding: 12px;
-    gap: 12px;
-  }
-  .hero-description {
-    font-size: 13px;
-  }
   .current-role {
     font-size: 9px;
   }
   .current-role button {
     font-size: 9px;
   }
-  .hero-lab-link {
-    padding-inline: 8px;
-  }
-  .hero-lab-link > span {
-    font-size: 13px;
-  }
-  .hero-lab-link > a {
-    font-size: 9px;
-  }
   .machine-controls button {
     padding: 9px;
     font-size: 9px;
-  }
-  .project-row {
-    grid-template-columns: 40px 1fr 170px 35px;
   }
   .about-section {
     gap: 55px;
@@ -1227,40 +1060,8 @@ h1 {
     margin-block: 12px 10px;
     font-size: 11px;
   }
-  .hero {
-    padding-top: 45px;
-    grid-template-columns: 1fr;
-  }
-  .hero h1 {
-    font-size: clamp(65px, 13vw, 90px);
-    line-height: 0.95;
-    letter-spacing: -2px;
-  }
-  .hero h1 br:first-of-type {
-    display: none;
-  }
-  .hero-copy > .eyebrow {
-    font-size: 8px;
-    margin-bottom: 20px;
-  }
-  .hero-description {
-    font-size: 14px;
-    max-width: 400px;
-    margin-top: 22px;
-  }
-  .hero-links {
-    margin-top: 23px;
-    gap: 15px;
-  }
-  .hero-links .button {
-    font-size: 11px;
-    padding: 13px 16px;
-  }
   .current-role {
     margin-top: 22px;
-  }
-  .hero-workbench {
-    margin-top: 50px;
   }
   .machine-stage {
     aspect-ratio: 1.9;
@@ -1268,20 +1069,6 @@ h1 {
   .machine-bot {
     top: 9%;
     left: 20%;
-  }
-  .hero-bottom {
-    margin-top: 35px;
-    padding-bottom: 19px;
-  }
-  .hero-bottom > span:last-child {
-    display: none;
-  }
-  .hero-bottom > span:first-child {
-    font-size: 14px;
-  }
-  .hero-bottom > a {
-    font-size: 8px;
-    gap: 8px;
   }
   .section-heading {
     margin-bottom: 26px;
@@ -1300,11 +1087,6 @@ h1 {
   .work-section {
     padding-top: 55px;
   }
-  .project-row {
-    grid-template-columns: 28px 1fr 28px;
-    gap: 10px;
-    padding-block: 24px;
-  }
   .project-index {
     font-size: 18px;
   }
@@ -1322,9 +1104,6 @@ h1 {
   }
   .project-arrow {
     grid-column: 3;
-  }
-  .project-row:hover {
-    padding-left: 5px;
   }
   .play-section {
     padding-top: 60px;
@@ -1496,7 +1275,6 @@ h1 {
   .tracking-state {
     text-align: left;
   }
-
 }
 @media (max-width: 430px) {
   .page-width {
@@ -1511,25 +1289,8 @@ h1 {
   .site-header nav {
     font-size: 10px;
   }
-  .hero h1 {
-    font-size: 65px;
-  }
-  .hero-description {
-    font-size: 12px;
-  }
   .desktop-break {
     display: none;
-  }
-  .hero-links {
-    gap: 8px;
-  }
-  .hero-links .button {
-    padding: 12px 14px;
-    font-size: 10px;
-    gap: 10px;
-  }
-  .hero-workbench {
-    margin-top: 40px;
   }
   .machine-caption .eyebrow {
     font-size: 7px;
@@ -1563,16 +1324,6 @@ h1 {
     left: 14%;
     gap: 5px;
   }
-  .hero-lab-link {
-    padding: 14px 4px;
-  }
-  .hero-lab-link > span {
-    font-size: 12px;
-  }
-  .hero-lab-link a {
-    font-size: 8px;
-    gap: 6px;
-  }
   .experiment-grid {
     grid-template-columns: 1fr;
   }
@@ -1600,9 +1351,6 @@ h1 {
   .contact-bottom .button {
     font-size: 11px;
   }
-  .project-row {
-    padding-block: 20px;
-  }
   .project-name {
     font-size: 28px;
   }
@@ -1611,9 +1359,6 @@ h1 {
   }
   .section-heading h2 {
     font-size: 32px;
-  }
-  .hero-bottom > span:first-child {
-    font-size: 12px;
   }
   .lab-heading h1 {
     font-size: 44px;
@@ -1687,19 +1432,6 @@ h1 {
 }
 .machine-internals > span:nth-child(3) {
   transform: translateY(50px);
-}
-@media (max-width: 780px) {
-  .hero {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .hero-copy {
-    min-width: 0;
-  }
-}
-@media (max-width: 430px) {
-  .hero h1 {
-    font-size: clamp(53px, 16vw, 65px);
-  }
 }
 @media (prefers-reduced-motion: reduce) {
   :root {

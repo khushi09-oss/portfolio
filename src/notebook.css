@@ -1,26 +1,3 @@
-:root {
-  --paper: #f5f2eb;
-  --surface: #eae6dd;
-  --text: #292b2a;
-  --muted: #65615b;
-  --line: #cec8bd;
-  --rose: #93485d;
-  --rose-soft: #e9d8d9;
-  --button: #292b2a;
-  background: var(--paper);
-  color: var(--text);
-}
-:root[data-theme="night"] {
-  --paper: #211f23;
-  --surface: #2c292f;
-  --text: #f0ece4;
-  --muted: #beb5bf;
-  --line: #4c454f;
-  --rose: #edb4c4;
-  --rose-soft: #42343b;
-  --button: #f0ece4;
-  --button-text: #211f23;
-}
 body {
   min-height: 100vh;
 }
