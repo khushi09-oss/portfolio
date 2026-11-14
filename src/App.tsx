@@ -185,13 +185,9 @@ export default function App({ initialUrl }: { initialUrl?: string }) {
       <LoadBoundary key={hash}>
         <Suspense
           fallback={
-            <main
-              id="main"
-              tabIndex={-1}
-              className="page-width route-loading"
-              role="status"
-            >
-              Opening the lab…
+            <main id="main" tabIndex={-1} className="page-width route-loading">
+              <h1 tabIndex={-1}>Opening the lab</h1>
+              <p role="status">This usually takes a moment.</p>
             </main>
           }
         >

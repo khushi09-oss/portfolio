@@ -1,5 +1,29 @@
 import { test, expect } from "@playwright/test";
 
+test("an unavailable camera explains the problem without blocking the lab", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    navigator.mediaDevices.getUserMedia = async () => {
+      throw new DOMException("Device unavailable", "NotReadableError");
+    };
+  });
+  await page.goto("/lab");
+  await page
+    .getByRole("button", { name: "Hand controls", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Enable camera", exact: true })
+    .click();
+  await expect(page.getByRole("alert")).toHaveText(
+    "The camera is busy or unavailable. Close other camera apps, then try again.",
+  );
+  await page.getByRole("button", { name: "Close hand controls" }).click();
+  await expect(
+    page.getByRole("button", { name: "Start source check" }),
+  ).toBeEnabled();
+});
+
 test("phone lab controls keep readable labels and comfortable targets", async ({
   page,
 }) => {

@@ -11,11 +11,19 @@ test("gallery cards use smaller actual screenshots in both themes", async ({
     .filter({ hasText: "Tiny Town" })
     .locator("img");
   await expect
-    .poll(() => image.evaluate((image: HTMLImageElement) => new URL(image.currentSrc).pathname))
+    .poll(() =>
+      image.evaluate((image: HTMLImageElement) =>
+        image.currentSrc ? new URL(image.currentSrc).pathname : "",
+      ),
+    )
     .toBe("/projects/tiny-town-day-480.webp");
   await page.getByRole("button", { name: "Switch to night mode" }).click();
   await expect
-    .poll(() => image.evaluate((image: HTMLImageElement) => new URL(image.currentSrc).pathname))
+    .poll(() =>
+      image.evaluate((image: HTMLImageElement) =>
+        image.currentSrc ? new URL(image.currentSrc).pathname : "",
+      ),
+    )
     .toBe("/projects/tiny-town-night-480.webp");
 });
 

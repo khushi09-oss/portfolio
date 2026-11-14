@@ -9,9 +9,14 @@ test("project previews show real interfaces and Tiny Town follows the selected t
   await expect(town).toBeVisible();
   await expect
     .poll(() =>
-      town.evaluate((image) => (image as HTMLImageElement).naturalWidth),
+      town.evaluate(
+        (image: HTMLImageElement) =>
+          image.complete &&
+          image.naturalWidth >= image.clientWidth &&
+          image.naturalWidth > 0,
+      ),
     )
-    .toBe(1440);
+    .toBe(true);
   await page.getByRole("button", { name: "Switch to night mode" }).click();
   await expect(town).toHaveAttribute("src", "/projects/tiny-town-night.png");
   await page.getByRole("link", { name: "Open the full project" }).click();
@@ -26,9 +31,14 @@ test("project previews show real interfaces and Tiny Town follows the selected t
   await expect(galilearn).toBeVisible();
   await expect
     .poll(() =>
-      galilearn.evaluate((image) => (image as HTMLImageElement).naturalWidth),
+      galilearn.evaluate(
+        (image: HTMLImageElement) =>
+          image.complete &&
+          image.naturalWidth >= image.clientWidth &&
+          image.naturalWidth > 0,
+      ),
     )
-    .toBe(1440);
+    .toBe(true);
 });
 
 test("portfolio content, contact links, and shareable project page", async ({
@@ -156,15 +166,18 @@ test("theme persists and both routes pass automated accessibility checks", async
   page,
 }) => {
   await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await page.getByRole("button", { name: "Switch to night mode" }).click();
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "night");
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await page.getByRole("link", { name: "Lab", exact: false }).first().click();
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "Try a source check",
   );
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 });
 

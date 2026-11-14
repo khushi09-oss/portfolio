@@ -62,6 +62,7 @@ export default function HandControls({
     const isCurrent = () => session.current.generation === generation;
     setStatus("starting");
     setError("");
+    let phase: "camera" | "preview" | "worker" = "camera";
     function fail(message: string) {
       if (!isCurrent()) return;
       release();
@@ -86,6 +87,7 @@ export default function HandControls({
         return;
       }
       session.current.stream = stream;
+      phase = "preview";
       stream
         .getVideoTracks()
         .forEach((track) =>
@@ -99,6 +101,7 @@ export default function HandControls({
       element.srcObject = stream;
       await element.play();
       if (!isCurrent()) return;
+      phase = "worker";
       const worker = new Worker(new URL("./hand.worker.ts", import.meta.url), {
         type: "module",
       });
@@ -192,10 +195,22 @@ export default function HandControls({
         ).href,
       });
     } catch (cause) {
+      console.warn("Hand controls startup failed.", {
+        phase,
+        reason: cause instanceof Error ? cause.name : "UnknownError",
+      });
       const message =
-        cause instanceof DOMException && cause.name === "NotAllowedError"
+        phase === "camera" &&
+        cause instanceof DOMException &&
+        cause.name === "NotAllowedError"
           ? "Camera permission was declined. You can still use every part of the lab."
-          : "No usable camera was found. Use HTTPS or localhost with a camera, or continue with the stage buttons.";
+          : cause instanceof DOMException && cause.name === "NotReadableError"
+            ? "The camera is busy or unavailable. Close other camera apps, then try again."
+            : phase === "worker"
+              ? "Hand tracking could not start in this browser. You can still use the stage buttons."
+              : phase === "preview"
+                ? "The camera preview could not start. Try again or use the stage buttons."
+                : "No usable camera was found. Use HTTPS or localhost with a camera, or continue with the stage buttons.";
       fail(message);
     }
   }

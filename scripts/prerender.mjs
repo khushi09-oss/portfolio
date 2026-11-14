@@ -27,6 +27,14 @@ const vite = await createServer({
 try {
   const { default: App } = await vite.ssrLoadModule("/src/App.tsx");
   const { projects } = await vite.ssrLoadModule("/src/data.ts");
+  const ids = projects.map((project) => project.id);
+  if (
+    new Set(ids).size !== ids.length ||
+    ids.some((id) => !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id))
+  )
+    throw new Error(
+      "Project IDs must be unique lowercase slugs before generating pages.",
+    );
   const { pageMetadata } = await vite.ssrLoadModule("/src/page-metadata.ts");
   const paths = [
     "/",
