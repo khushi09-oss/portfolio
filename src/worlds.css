@@ -1,0 +1,416 @@
+.lab-world-link {
+  margin-top: 16px;
+  background: transparent;
+}
+.lab-bottom-grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 48px;
+}
+.challenge-panel > p:not(.eyebrow) {
+  max-width: 610px;
+}
+.coop-world {
+  --world-sky-top: #e7ede6;
+  --world-sky-bottom: #eee9e0;
+  --world-cloud: #f7f6ee;
+  --world-distance: #d7ddd0;
+  --world-rock: #bbb8a7;
+  --world-grass: #7b8a72;
+  --world-line: #535d54;
+  --world-paper: #ece9db;
+  --world-metal: #7d8580;
+  --world-accent: #ae7e87;
+  --world-ink: #303a32;
+  --world-leaf: #718669;
+  --world-moon: #f5e7b6;
+  --world-lamp: #f1d39d;
+  --world-rain: #c6d4dc;
+  position: relative;
+  margin: 28px 0 22px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+  color: var(--world-ink);
+  background: var(--world-sky-bottom);
+  isolation: isolate;
+}
+.coop-world.is-night {
+  --world-sky-top: #222d35;
+  --world-sky-bottom: #39383b;
+  --world-cloud: #455058;
+  --world-distance: #303e40;
+  --world-rock: #485151;
+  --world-grass: #617363;
+  --world-line: #9da89c;
+  --world-paper: #c1c8b9;
+  --world-metal: #838e8b;
+  --world-accent: #bc879b;
+  --world-ink: #e4e7d8;
+  --world-leaf: #536f60;
+  --world-moon: #dbcda9;
+  --world-lamp: #f1c68b;
+}
+.world-caption {
+  position: absolute;
+  z-index: 2;
+  top: 18px;
+  inset-inline: 22px;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  font-size: 9px;
+  letter-spacing: 1.1px;
+}
+.world-caption > span:last-child {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  letter-spacing: 0.3px;
+}
+.world-landscape {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.world-landscape text {
+  font:
+    12px "DM Sans Variable",
+    sans-serif;
+}
+.world-stars {
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+.is-night .world-stars {
+  opacity: 1;
+}
+.world-rain {
+  opacity: 0;
+  pointer-events: none;
+}
+.is-night .world-rain {
+  opacity: 0.35;
+  animation: world-rain 2s linear infinite;
+}
+.world-traveller,
+.world-partner {
+  position: absolute;
+  top: calc(66.666% - 98px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.world-traveller {
+  left: 25%;
+  transition: left 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.is-complete .world-traveller {
+  left: 68%;
+}
+.world-traveller > svg {
+  height: 59px;
+  width: 39px;
+}
+.world-partner {
+  left: 77%;
+}
+.world-partner > .pixel-bot {
+  height: 59px;
+  width: 47px;
+  color: var(--world-ink);
+}
+.world-character-label {
+  font-size: 8px;
+  letter-spacing: 1.2px;
+  margin-bottom: 9px;
+  white-space: nowrap;
+}
+.world-bubble {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 230px;
+  padding: 12px 15px;
+  font-size: 11px;
+  line-height: 1.6;
+  background: var(--paper);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  box-shadow: 0 3px 14px #00000006;
+}
+.world-bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: calc(50% - 5px);
+  border: 5px solid transparent;
+  border-top-color: var(--line);
+}
+.coop-world figcaption {
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  font-size: 10px;
+  color: var(--text);
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+}
+.bridge-tile {
+  transition: opacity 0.3s;
+}
+.bridge-task {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 1040px;
+  margin-top: 16px;
+}
+.bridge-task .task-brief {
+  margin: 0;
+  align-self: start;
+}
+.bridge-task .source-options {
+  margin: 0;
+}
+.fixture-label {
+  display: block;
+  margin-top: 13px;
+  font-size: 9px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.claim-task {
+  margin-top: 28px;
+  padding-top: 23px;
+  border-top: 1px solid var(--line);
+}
+.claim-task .eyebrow {
+  margin: 0 0 15px;
+}
+.claim-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.claim-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  text-align: left;
+  padding: 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.claim-option:hover:not(:disabled) {
+  border-color: var(--rose);
+}
+.iteration-panel {
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.iteration-panel .iteration-tabs {
+  max-width: 700px;
+}
+.iteration-panel .iteration-copy {
+  min-height: 0;
+  max-width: 740px;
+  padding-block: 12px;
+}
+.companion-growth {
+  display: block;
+}
+.companion-current {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.companion-current > .pixel-bot {
+  width: 43px;
+  height: 54px;
+}
+.companion-copy {
+  flex: 1;
+}
+.growth-trail {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  border-top: 1px solid var(--line);
+  margin-top: 22px;
+  padding-top: 24px;
+}
+.growth-stop {
+  position: relative;
+  display: grid;
+  grid-template-columns: 65px 1fr;
+  column-gap: 20px;
+  align-items: center;
+  padding: 14px 14px 14px 20px;
+  border-left: 1px solid var(--line);
+}
+.growth-stop.current {
+  border-left: 2px solid var(--rose);
+  background: color-mix(in srgb, var(--paper) 45%, transparent);
+}
+.growth-number {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  color: var(--muted);
+  font-size: 9px;
+}
+.growth-stop > .pixel-bot {
+  width: 48px;
+  height: 60px;
+}
+.growth-stop.locked > .pixel-bot {
+  opacity: 0.35;
+}
+.growth-stop strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 25px;
+  font-weight: 500;
+}
+.growth-stop > div > span {
+  font-size: 9px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.growth-status {
+  grid-column: 2;
+  margin-top: 8px;
+  font-size: 8px;
+  color: var(--muted);
+}
+.companion .growth-note {
+  color: var(--muted);
+  font-size: 9px;
+  margin-top: 18px;
+}
+@keyframes world-rain {
+  from {
+    transform: translateY(-14px);
+  }
+  to {
+    transform: translateY(14px);
+  }
+}
+@media (max-width: 780px) {
+  .world-caption {
+    top: 12px;
+    inset-inline: 15px;
+    font-size: 7px;
+  }
+  .world-traveller,
+  .world-partner {
+    top: calc(66.666% - 82px);
+  }
+  .world-traveller > svg,
+  .world-partner > .pixel-bot {
+    height: 45px;
+  }
+  .world-character-label {
+    font-size: 6px;
+    margin-bottom: 6px;
+  }
+  .world-bubble {
+    width: 165px;
+    font-size: 9px;
+    padding: 8px 10px;
+    bottom: calc(100% + 9px);
+  }
+  .bridge-task {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .claim-options {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .claim-option {
+    padding: 13px 15px;
+  }
+  .growth-trail {
+    gap: 10px;
+  }
+  .growth-stop {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 15px 9px 12px;
+    gap: 8px;
+  }
+  .growth-stop > .pixel-bot {
+    width: 37px;
+    height: 47px;
+  }
+  .growth-stop strong {
+    font-size: 22px;
+  }
+  .growth-stop > div > span {
+    font-size: 8px;
+  }
+  .growth-number {
+    font-size: 7px;
+    right: 6px;
+  }
+  .growth-status {
+    margin-top: 0;
+  }
+  .companion-current {
+    gap: 14px;
+  }
+}
+@media (max-width: 600px) {
+  .coop-world {
+    margin-top: 22px;
+  }
+  .world-caption {
+    top: 9px;
+    inset-inline: 10px;
+    font-size: 6px;
+    letter-spacing: 0.7px;
+  }
+  .world-bubble {
+    display: none;
+  }
+  .world-traveller,
+  .world-partner {
+    top: calc(66.666% - 63px);
+  }
+  .world-traveller > svg,
+  .world-partner > .pixel-bot {
+    height: 29px;
+    width: 24px;
+  }
+  .world-character-label {
+    font-size: 5px;
+    margin-bottom: 4px;
+    letter-spacing: 0.4px;
+  }
+  .coop-world figcaption {
+    font-size: 8px;
+    padding: 11px 10px;
+  }
+  .coop-world figcaption > span:last-child {
+    max-width: 110px;
+    text-align: right;
+  }
+  .growth-stop strong {
+    font-size: 20px;
+  }
+  .companion .growth-note {
+    font-size: 8px;
+  }
+  .task-brief code {
+    overflow-wrap: anywhere;
+  }
+}
