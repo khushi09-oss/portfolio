@@ -43,17 +43,17 @@ export function Introduction({
     {
       title: "I build across the stack.",
       copy: "My work covers the model, the backend, and the interface. At Recollia, I led development of the AI Tutor.",
-      project: projects[0],
+      project: projects.find((project) => project.id === "recollia"),
     },
     {
       title: "I build personal projects too.",
       copy: "Tiny Town is a pixel-world simulation. I also work on Galilearn, an app for learning ML.",
-      project: projects[5],
+      project: projects.find((project) => project.id === "tiny-town"),
     },
     {
       title: "Take a look inside my notebook.",
       copy: "Each project has a page for what I built, how it works, and the decisions behind it. Pick whichever interests you.",
-      project: projects[1],
+      project: projects.find((project) => project.id === "github-mcp"),
     },
   ];
   const current = steps[step];
@@ -117,7 +117,11 @@ export function Introduction({
             <span>INTRODUCTION {step + 1} / 3</span>
           </div>
           <div className="welcome-state" key={step}>
-            <ProjectArtwork project={current.project} night={night} />
+            {current.project ? (
+              <ProjectArtwork project={current.project} night={night} />
+            ) : (
+              <NotebookGuide />
+            )}
             <div className="welcome-copy" aria-live="polite" aria-atomic="true">
               <h2>{current.title}</h2>
               <p>{current.copy}</p>
