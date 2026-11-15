@@ -3,9 +3,22 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { ProjectGallery } from "./ProjectGallery";
 import { projects } from "./data";
-import { galleryPosition } from "./gallery-layout";
+import { galleryPosition, galleryChapter } from "./gallery-layout";
 
 describe("a growing project gallery", () => {
+  it("gives every visible project a scroll chapter without indexing outside its page", () => {
+    expect(galleryChapter(0, 0)).toBe(-1);
+    for (const count of [1, 2, 3, 6]) {
+      expect(galleryChapter(-1, count)).toBe(0);
+      expect(galleryChapter(2, count)).toBe(count - 1);
+      const chapters = Array.from({ length: 101 }, (_, i) =>
+        galleryChapter(i / 100, count),
+      );
+      expect([...new Set(chapters)]).toEqual(
+        Array.from({ length: count }, (_, i) => i),
+      );
+    }
+  });
   for (const count of [0, 1, 3, 6, 7, 8, 12, 20]) {
     it(`keeps ${count} projects in readable groups with the correct range`, () => {
       const items = Array.from({ length: count }, (_, i) => ({

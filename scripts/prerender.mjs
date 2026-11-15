@@ -1,7 +1,6 @@
 import { readFile, writeFile, mkdir, copyFile } from "node:fs/promises";
-import { PassThrough } from "node:stream";
 import { createElement } from "react";
-import { renderToPipeableStream } from "react-dom/server";
+import { prerenderToNodeStream } from "react-dom/static";
 import { createServer } from "vite";
 
 process.env.NODE_ENV = "production";
@@ -48,24 +47,16 @@ try {
     ...projects.flatMap((p) => [`/work/${p.id}`, `/project/${p.id}`]),
   ];
   for (const path of paths) {
-    const body = await new Promise((resolve, reject) => {
-      const output = new PassThrough();
-      let markup = "";
-      output.on("data", (chunk) => {
-        markup += chunk.toString();
-      });
-      output.on("end", () => resolve(markup));
-      output.on("error", reject);
-      const stream = renderToPipeableStream(
-        createElement(App, { initialUrl: path }),
-        {
-          onAllReady() {
-            stream.pipe(output);
-          },
-          onError: reject,
-        },
-      );
-    });
+    const { prelude } = await prerenderToNodeStream(
+      createElement(App, { initialUrl: path }),
+      // Static files must not need React's scripts to reveal large Suspense segments.
+      {
+        progressiveChunkSize: Number.MAX_SAFE_INTEGER,
+        onError(error) { throw error; },
+      },
+    );
+    let body = "";
+    for await (const chunk of prelude) body += chunk.toString();
     const meta = pageMetadata(path);
     const url = new URL(meta.path, origin).href;
     const tags = `<link rel="canonical" href="${escape(url)}" />\n<meta property="og:type" content="website" />\n<meta property="og:title" content="${escape(meta.title)}" />\n<meta property="og:description" content="${escape(meta.description)}" />\n<meta property="og:url" content="${escape(url)}" />\n<meta property="og:image" content="${new URL(meta.image, origin).href}" />\n<meta name="twitter:card" content="summary_large_image" />`;

@@ -1,3 +1,10 @@
+export function galleryChapter(progress: number, count: number) {
+  if (count < 1) return -1;
+  // The opening third establishes the overview before highlighting each project.
+  const journey = Math.max(0, Math.min(1, (progress - 0.3) / 0.7));
+  return Math.min(count - 1, Math.floor(journey * count));
+}
+
 export function galleryPosition(
   index: number,
   count: number,

@@ -15,7 +15,7 @@ function locationHref() {
     : location.pathname + location.search;
 }
 
-type Position = { key: string; y: number; focus?: string };
+type Position = { key: string; y: number; focus?: string; focusId?: string };
 function returnPositions(state: unknown) {
   const positions = new Map<string, Position>();
   if (
@@ -52,6 +52,7 @@ function savedPosition(state: unknown, key: string): Position | undefined {
     key,
     y: p.y,
     focus: "focus" in p && typeof p.focus === "string" ? p.focus : undefined,
+    focusId: "focusId" in p && typeof p.focusId === "string" ? p.focusId : undefined,
   };
 }
 
@@ -124,8 +125,8 @@ export function usePortfolioNavigation(initialUrl?: string) {
       window.removeEventListener("popstate", navigate);
     };
   }, []);
-  function remember(focus?: string) {
-    const position = { key: routeKey(route), y: scrollY, focus };
+  function remember(focus?: string, focusId?: string) {
+    const position = { key: routeKey(route), y: scrollY, focus, focusId };
     positions.current.set(position.key, position);
     history.replaceState(
       {
@@ -169,7 +170,7 @@ export function usePortfolioNavigation(initialUrl?: string) {
       else window.scrollTo({ top: 0, behavior: "instant" });
       return;
     }
-    remember(href);
+    remember(href, anchor?.id || undefined);
     returning.current = anchor?.hasAttribute("data-return") || false;
     event.preventDefault();
     history.pushState(
@@ -242,6 +243,15 @@ export function FocusPage({
       ].find((a) => a.getAttribute("href") === position.focus);
       (target || heading)?.focus({ preventScroll: true });
       window.scrollTo({ top: position.y, behavior: "instant" });
+      if (position.focusId) {
+        // Focusing the project first restores its notes before their link receives focus.
+        const frame = requestAnimationFrame(() => {
+          const invokingLink = document.getElementById(position.focusId!);
+          if (invokingLink && invokingLink.getAttribute("href") === position.focus)
+            invokingLink.focus({ preventScroll: true });
+        });
+        return () => cancelAnimationFrame(frame);
+      }
     } else if (intro) {
       const title = document.querySelector<HTMLElement>("#introduction h2");
       title?.focus({ preventScroll: true });

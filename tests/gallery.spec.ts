@@ -1,15 +1,14 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-test("gallery cards use smaller actual screenshots in both themes", async ({
+test("gallery notes use smaller actual screenshots in both themes", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  const image = page
-    .locator(".gallery-card")
-    .filter({ hasText: "Tiny Town" })
-    .locator("img");
+  await page.getByRole("region", { name: "Project gallery" })
+    .getByRole("link", { name: "Tiny Town", exact: true }).focus();
+  const image = page.locator(".gallery-detail img");
   await expect
     .poll(() =>
       image.evaluate((image: HTMLImageElement) =>
@@ -81,7 +80,7 @@ test("gallery gathers and rotates on scroll while project links stay usable", as
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toBeFocused();
   const gallery = page.getByRole("region", { name: "Project gallery" });
-  await expect(gallery.getByRole("link")).toHaveCount(6);
+  await expect(gallery.locator(".gallery-card")).toHaveCount(6);
   await expect(gallery.locator(".gallery-orbit")).toHaveText("");
   const first = gallery.getByRole("link").first();
   const paper = first.locator(".gallery-card-paper");
@@ -150,7 +149,10 @@ test("touch-sized gallery fits a phone and does not require hover", async ({
     ),
   ).toBe(true);
   const link = gallery.getByRole("link", { name: "Tiny Town", exact: true });
+  const car = link.locator(".atlas-town-car");
+  const before = await car.evaluate((element) => getComputedStyle(element).translate);
   await link.scrollIntoViewIfNeeded();
+  await expect.poll(() => car.evaluate((element) => getComputedStyle(element).translate)).not.toBe(before);
   await link.click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Tiny Town");
 });
