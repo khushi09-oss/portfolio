@@ -57,6 +57,12 @@ The build generates HTML for each project and main page, with canonical URLs, de
 
 Typed project data is shared by notebook spreads and project pages. Theme tokens have one definition per mode in `src/styles.css`. Original SVG illustrations and the Lab use cream/graphite/rose accents; actual project captures keep their own colors. Screenshots have 480/960/1440px WebP variants, with context-specific image sizes and the original full-resolution captures retained. A new preview without variants still works through its ordinary image URL. The lab and its 3D code load separately from the entry pages, and camera assets remain opt-in.
 
+## Private project concepts
+
+Optional interface concepts require matching local files at `.private-previews/<project-id>/index.html` and explicit enablement through `VITE_ENABLE_PRIVATE_PREVIEWS=true` or an enabled manifest in that ignored directory. Setting the flag to `false` always disables them. Those files and local environment settings are ignored by this repository. The normal public build and GitHub CI disable this feature and check that private assets do not enter source or output. Authorized protected hosting checkouts may retain their own private files and build setting; changing a site's audience requires reviewing that content first.
+
+Concept documents run in a script-only sandbox, with no access to the parent page's DOM. The parent accepts bounded height messages only from the embedded frame, so the concepts can fit the page without a nested vertical scrollbar.
+
 ## Verify
 
 ```sh
@@ -68,7 +74,7 @@ npm audit
 
 On Linux, install browser system dependencies with `npx playwright install chromium --with-deps --only-shell`.
 
-Current verification: 21 unit tests and 36 Chromium browser checks pass against the production build, alongside lint and TypeScript. Coverage includes provenance and pinch validation, project reordering, history and reload returns, failed module downloads, ring-label visibility, responsive image selection, clipboard denial, static pages without JavaScript, both themes, automated accessibility, layouts from 320–1440px, permission denial, model startup on a synthetic camera and cleanup after late permission resolution. Real-hand accuracy, device-specific camera behavior, Safari/Firefox and field performance have not been verified.
+Current verification: 23 unit tests and 36 Chromium browser checks pass against the production build, alongside lint and TypeScript. Coverage includes provenance and pinch validation, project reordering, history and reload returns, failed module downloads, ring-label visibility, responsive image selection, clipboard denial, static pages without JavaScript, both themes, automated accessibility, layouts from 320–1440px, permission denial, model startup on a synthetic camera and cleanup after late permission resolution. Real-hand accuracy, device-specific camera behavior, Safari/Firefox and field performance have not been verified.
 
 Browser checks start a production preview automatically after `npm run check`. To use an existing preview on another port, set `PORTFOLIO_BASE_URL` to its local URL when running browser tests. Static-generation checks require a production build rather than the development server.
 

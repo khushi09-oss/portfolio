@@ -137,6 +137,31 @@
 .lab-project-exit {
   margin-top: 24px;
 }
+.concepts-shortcut {
+  background: transparent;
+  margin-top: 18px;
+  min-height: 44px;
+}
+.private-project-concepts {
+  padding-block: 36px;
+  border-top: 1px solid var(--line);
+  scroll-margin-top: 125px;
+}
+.private-project-concepts h2 {
+  font-family: inherit;
+  font-size: clamp(28px, 4vw, 42px);
+  margin: 12px 0;
+  letter-spacing: -0.04em;
+}
+.private-project-concepts > p:not(.eyebrow) {
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+.private-project-concepts iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+}
 .lab-page h1,
 .lab-page h2 {
   font-family: inherit;

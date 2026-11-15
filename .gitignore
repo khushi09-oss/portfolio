@@ -13,3 +13,4 @@ public/vision/
 *.tsbuildinfo
 /docs/DESIGN.md
 /.openai/
+/.private-previews/

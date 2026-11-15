@@ -3,6 +3,8 @@ import { Icon } from "./Icon";
 import { ProjectArtwork } from "./ProjectArtwork";
 import { ProjectActions, projectEmail } from "./ProjectActions";
 import { homeHref, projectHref } from "./routes";
+import { PrivateProjectPreview } from "./PrivateProjectPreview";
+import { hasPrivatePreview } from "./private-preview";
 
 export function ProjectPage({
   project,
@@ -16,6 +18,7 @@ export function ProjectPage({
   galleryPage?: number;
 }) {
   const origin = fromGallery ? { page: galleryPage } : undefined;
+  const concepts = hasPrivatePreview(project.id);
   const next =
     projects.length > 1
       ? projects[
@@ -43,6 +46,18 @@ export function ProjectPage({
         <p>{project.overview}</p>
       </header>
       <ProjectActions project={project} origin={origin} />
+      {concepts && (
+        <button
+          className="inline-link concepts-shortcut"
+          onClick={() => {
+            const target = document.getElementById("project-concepts");
+            target?.querySelector("h2")?.focus({ preventScroll: true });
+            target?.scrollIntoView({ behavior: "instant", block: "start" });
+          }}
+        >
+          See interface concepts <Icon name="arrow" size={16} />
+        </button>
+      )}
       <div className="project-page-body">
         <div className="project-page-copy">
           <h2>My contribution</h2>
@@ -64,6 +79,7 @@ export function ProjectPage({
           </div>
         </aside>
       </div>
+      {concepts && <PrivateProjectPreview id={project.id} />}
       <div className="project-page-links">
         <a className="button primary" href={projectEmail(project)}>
           Discuss this project <Icon name="diagonal" size={16} />

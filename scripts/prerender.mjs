@@ -1,8 +1,10 @@
-import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir, copyFile } from "node:fs/promises";
 import { PassThrough } from "node:stream";
 import { createElement } from "react";
 import { renderToPipeableStream } from "react-dom/server";
 import { createServer } from "vite";
+
+process.env.NODE_ENV = "production";
 
 const origin = new URL(
   process.env.SITE_URL ||
@@ -21,6 +23,7 @@ const escape = (value) =>
       ],
   );
 const vite = await createServer({
+  mode: "production",
   server: { middlewareMode: true },
   appType: "custom",
 });
@@ -90,6 +93,24 @@ try {
       await writeFile(new URL(`../dist${path}.html`, import.meta.url), html);
   }
   console.log(`Generated ${paths.length} static pages with project metadata.`);
+  const privateProjects = JSON.parse(
+    vite.config.define["import.meta.env.VITE_PRIVATE_PROJECT_PREVIEWS"],
+  )
+    .split(",")
+    .filter(Boolean);
+  for (const id of privateProjects) {
+    if (!ids.includes(id))
+      throw new Error("A private preview must match a project ID.");
+    const directory = new URL(
+      `../dist/private-previews/${id}/`,
+      import.meta.url,
+    );
+    await mkdir(directory, { recursive: true });
+    await copyFile(
+      new URL(`../.private-previews/${id}/index.html`, import.meta.url),
+      new URL("index.html", directory),
+    );
+  }
 } finally {
   await vite.close();
 }
