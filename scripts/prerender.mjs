@@ -107,8 +107,8 @@ try {
     );
     await mkdir(directory, { recursive: true });
     await copyFile(
-      new URL(`../.private-previews/${id}/index.html`, import.meta.url),
-      new URL("index.html", directory),
+      new URL(`../.private-previews/${id}/document.json`, import.meta.url),
+      new URL("document.json", directory),
     );
   }
 } finally {

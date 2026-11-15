@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => {
             (entry) =>
               entry.isDirectory() &&
               /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(entry.name) &&
-              existsSync(new URL(`${entry.name}/index.html`, directory)),
+              existsSync(new URL(`${entry.name}/document.json`, directory)),
           )
           .map((entry) => entry.name)
       : [];

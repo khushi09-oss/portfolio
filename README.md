@@ -59,9 +59,9 @@ Typed project data is shared by notebook spreads and project pages. Theme tokens
 
 ## Private project concepts
 
-Optional interface concepts require matching local files at `.private-previews/<project-id>/index.html` and explicit enablement through `VITE_ENABLE_PRIVATE_PREVIEWS=true` or an enabled manifest in that ignored directory. Setting the flag to `false` always disables them. Those files and local environment settings are ignored by this repository. The normal public build and GitHub CI disable this feature and check that private assets do not enter source or output. Authorized protected hosting checkouts may retain their own private files and build setting; changing a site's audience requires reviewing that content first.
+Optional interface concepts require matching local files at `.private-previews/<project-id>/document.json` and explicit enablement through `VITE_ENABLE_PRIVATE_PREVIEWS=true` or an enabled manifest in that ignored directory. Setting the flag to `false` always disables them. Those files and local environment settings are ignored by this repository. The normal public build and GitHub CI disable this feature and check that private assets do not enter source or output. Authorized protected hosting checkouts may retain their own private files and build setting; changing a site's audience requires reviewing that content first.
 
-Concept documents run in a script-only sandbox, with no access to the parent page's DOM. The parent accepts bounded height messages only from the embedded frame, so the concepts can fit the page without a nested vertical scrollbar.
+Concept payloads contain self-contained HTML, fetched as protected JSON and rendered in a script-only sandbox. This avoids hosting-editor script injection into the concept document. The sandbox prevents access to the parent page's DOM. The parent accepts bounded height messages only from the embedded frame, so the concepts can fit the page without a nested vertical scrollbar.
 
 ## Verify
 
